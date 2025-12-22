@@ -1,0 +1,17 @@
+path,N,method,duration,objective
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,DC ,0.671096,1928.91
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,RC,0.738593,1910.89
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,VND,53.4491,1087.61
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,SA,5.99851,1784.97
+../instances/50/test/instance37_nreq50_nveh2_gamma45.txt,50,DC ,0.982179,1527.35
+../instances/50/test/instance37_nreq50_nveh2_gamma45.txt,50,RC,2.32369,1727.74
+../instances/50/test/instance37_nreq50_nveh2_gamma45.txt,50,VND,7.83257,971.314
+../instances/50/test/instance37_nreq50_nveh2_gamma45.txt,50,SA,29.3899,1249.64
+../instances/50/test/instance34_nreq50_nveh2_gamma47.txt,50,DC ,0.60359,1771.66
+../instances/50/test/instance34_nreq50_nveh2_gamma47.txt,50,RC,0.6465,2027.57
+../instances/50/test/instance34_nreq50_nveh2_gamma47.txt,50,VND,24.1144,1081.82
+../instances/50/test/instance34_nreq50_nveh2_gamma47.txt,50,SA,2.02349,1728.47
+../instances/50/test/instance47_nreq50_nveh2_gamma42.txt,50,DC ,0.58227,1410.55
+../instances/50/test/instance47_nreq50_nveh2_gamma42.txt,50,RC,0.684041,1601.84
+../instances/50/test/instance47_nreq50_nveh2_gamma42.txt,50,VND,21.233,838.845
+../instances/50/test/instance47_nreq50_nveh2_gamma42.txt,50,SA,2.00098,1297.33

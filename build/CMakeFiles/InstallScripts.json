@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/chris/Desktop/heuristics/build/cmake_install.cmake",
+		"/home/chris/Desktop/heuristics/build/core/cmake_install.cmake",
+		"/home/chris/Desktop/heuristics/build/pipelines/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3 -Wl,--dependency-file=CMakeFiles/main_a.dir/link.d CMakeFiles/main_a.dir/main_a.cpp.o -o main_a  ../core/libcore.a
