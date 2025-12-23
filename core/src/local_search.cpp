@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 #include "solvers.hpp"
 #include "structures.hpp"
 
@@ -13,6 +14,12 @@ Solution LS::local_search(
 {
 
     Solution sol = initial_sol; // copy
+    if(sol.fairness != I.fairness){
+        std::cerr<<" During local search. Sol fairness not equal to instance fairness. "<<std::endl;
+        std::abort();
+    }
+    
+
     double f = utils::objective(I, sol);
     size_t iteration = 0;
     static std::mt19937 rng(std::random_device{}());
@@ -38,6 +45,6 @@ Solution LS::local_search(
     if (iteration_ptr != nullptr){
         *iteration_ptr = iteration;
     }
-
+    assert(sol.fairness == initial_sol.fairness);
     return sol;
 }

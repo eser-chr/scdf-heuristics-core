@@ -27,6 +27,7 @@ public:
     int C;      // vehicle capacity
     int gamma;  // min served requests
     double rho; // fairness weight
+    std::string fairness;
 
     std::vector<int> demands;         // demands per request size n
     Matrix dist;                      // (1 + 2n) x (1 + 2n) distance over nodes, precompute
@@ -34,7 +35,7 @@ public:
     std::vector<int> load_change;     // how much does the load change if a vehicle passes throught that node
     std::vector<gt::Coords> coords;
 
-    Instance(std::string const &path);
+    Instance(std::string const &path, std::string const & fairness = "jain");
     void printme() const;
 
 private:
@@ -48,6 +49,7 @@ struct Solution
     std::vector<double> routes_distances;
     double total_distance;
     double sum_of_squares; // sum of dists[i]**2. For efficient delta eval
+    std::string fairness;
 
     Solution() = default;
     void write_solution(const std::string &path, const std::string &instance_name) const;
@@ -74,6 +76,7 @@ namespace utils
 
     double max_min_fairness(Instance const &I, std::vector<double> const &dists);
 
+    double gini_cefficient_nominator(Instance const &I, std::vector<double> const &dists);
     double gini_cefficient(Instance const &I, std::vector<double> const &dists);
 
     bool is_route_feasible(
@@ -83,7 +86,7 @@ namespace utils
         const Instance &inst, const Solution &sol);
 
     // overload if different fairness is required.
-    double objective(Instance const &I, Solution const &sol, std::function<double(Instance const &I, std::vector<double> const &dists)> fairness_func);
+    // double objective(Instance const &I, Solution const &sol, std::function<double(Instance const &I, std::vector<double> const &dists)> fairness_func);
 
     std::vector<double> calc_my_metric(const Instance &I, double a);
 } // namespace utils

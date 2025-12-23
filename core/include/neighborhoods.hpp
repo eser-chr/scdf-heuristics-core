@@ -49,6 +49,9 @@ public:
     virtual std::optional<GenericMove> generate_random(std::mt19937 &rng) const = 0;
     virtual bool is_valid(const GenericMove &mov) const = 0;
     virtual double calc_delta(const GenericMove &mov) const = 0;
+    virtual double calc_delta_jain(const GenericMove &mov) const = 0;
+    virtual double calc_delta_maxmin(const GenericMove &mov) const = 0;
+    virtual double calc_delta_gini(const GenericMove &mov) const = 0;
     virtual Solution apply(const GenericMove &mov) const = 0;
 };
 
@@ -63,6 +66,9 @@ public:
     std::optional<GenericMove> generate_random(std::mt19937 &rng) const;
     bool is_valid(const GenericMove &mov) const override;
     double calc_delta(const GenericMove &mov) const override;
+    double calc_delta_jain(const GenericMove &mov) const override;
+    double calc_delta_maxmin(const GenericMove &mov) const override;
+    double calc_delta_gini(const GenericMove &mov) const override;
     Solution apply(const GenericMove &mov) const override;
     
 };
@@ -103,6 +109,9 @@ class RequestMove : public Neighborhood
     std::optional<GenericMove> generate_random(std::mt19937 &rng) const;
     bool is_valid(const GenericMove &mov) const override;
     double calc_delta(const GenericMove &mov) const override;
+    double calc_delta_jain(const GenericMove &mov) const override;
+    double calc_delta_maxmin(const GenericMove &mov) const override;
+    double calc_delta_gini(const GenericMove &mov) const override;
     Solution apply(const GenericMove &mov) const override;
     
 };
@@ -115,13 +124,16 @@ class TwoOptNeighborhood : public Neighborhood
     public:
     int const type = 3;
     std::string const name = "TwoOpt";
-
+    
     TwoOptNeighborhood(const Instance &I_, const Solution &sol_)
-        : Neighborhood(I_, sol_) {}
+    : Neighborhood(I_, sol_) {}
     std::vector<GenericMove> generate() const override;
     std::optional<GenericMove> generate_random(std::mt19937 &rng) const;
     bool is_valid(const GenericMove &mov) const override;
     double calc_delta(const GenericMove &mov) const override;
+    double calc_delta_jain(const GenericMove &mov) const override;
+    double calc_delta_maxmin(const GenericMove &mov) const override;
+    double calc_delta_gini(const GenericMove &mov) const override;
     Solution apply(const GenericMove &mov) const override;
 
 };

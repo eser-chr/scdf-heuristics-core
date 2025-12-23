@@ -99,5 +99,5 @@ namespace SA
 
 namespace GA{
     Solution genetic_algorithm(Instance const& I);
-};
+}
 namespace AC{};

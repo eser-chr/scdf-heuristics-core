@@ -75,9 +75,10 @@ int main(int argc, char **argv)
         {
             std::cout << " -" << std::endl;
             Solution dr_sol;
-            Instance I(instance);
+            Instance I(instance, "maxmin");
             { // Deterministic
 
+                std::cout<<"dc";
                 Timer t;
                 dr_sol = DC::construction(I);
                 double exec_time = t.get_time();
@@ -86,7 +87,7 @@ int main(int argc, char **argv)
                     std::cerr << "Solution is not feasible ERROR?";
                 }
                 double objective = utils::objective(I, dr_sol);
-
+                
                 RES res;
                 res.duration = exec_time;
                 res.method = "DC ";
@@ -96,7 +97,8 @@ int main(int argc, char **argv)
                 all_res.push_back(res);
             }
             { // Random
-
+                std::cout<<" rc";
+                
                 Timer t;
                 auto rc_sol = RC::construction(I, 0.2); // after tuning
                 double exec_time = t.get_time();
@@ -105,7 +107,7 @@ int main(int argc, char **argv)
                     std::cerr << "Solution is not feasible ERROR?";
                 }
                 double objective = utils::objective(I, rc_sol);
-
+                
                 RES res;
                 res.duration = exec_time;
                 res.method = "RC";
@@ -115,7 +117,8 @@ int main(int argc, char **argv)
                 all_res.push_back(res);
             }
             { // Beam Search
-
+                
+                std::cout<<" bs";
                 Timer t;
                 auto bs_sol = BS::beam_search(I, 0.9, 10); // after tuning
                 double exec_time = t.get_time();
@@ -124,7 +127,7 @@ int main(int argc, char **argv)
                     std::cerr << "Solution is not feasible ERROR?";
                 }
                 double objective = utils::objective(I, bs_sol);
-
+                
                 RES res;
                 res.duration = exec_time;
                 res.method = "BS";
@@ -133,9 +136,10 @@ int main(int argc, char **argv)
                 res.N = N;
                 all_res.push_back(res);
             }
-
+            
             { // LS
-
+                
+                std::cout<<" ls";
                 Timer t;
                 int total_iter = 0;
                 auto sol_ls = LS::local_search(I, dr_sol, neighborhoods[1], StepFunction::first_improvement, stopping_criterion);
@@ -145,7 +149,7 @@ int main(int argc, char **argv)
                     std::cerr << "Solution is not feasible ERROR?";
                 }
                 double objective = utils::objective(I, sol_ls);
-
+                
                 RES res;
                 res.duration = exec_time;
                 res.method = "LS";
@@ -155,7 +159,8 @@ int main(int argc, char **argv)
                 all_res.push_back(res);
             }
             { // VND
-
+                
+                std::cout<<" vnd";
                 Timer t;
                 int total_iter = 0;
                 auto sol_vnd = VND::vnd(I, dr_sol, neighborhoods, StepFunction::first_improvement, stopping_criterion);
@@ -165,7 +170,7 @@ int main(int argc, char **argv)
                     std::cerr << "Solution is not feasible ERROR?";
                 }
                 double objective = utils::objective(I, sol_vnd);
-
+                
                 RES res;
                 res.duration = exec_time;
                 res.method = "VND";
@@ -175,7 +180,8 @@ int main(int argc, char **argv)
                 all_res.push_back(res);
             }
             { // SA
-
+                
+                std::cout<<" sa";
                 int total_iters = 0;
                 Timer t;
                 auto sol_sa = SA::simulated_annealing(I, dr_sol, neighborhoods,

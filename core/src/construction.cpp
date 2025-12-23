@@ -159,5 +159,6 @@ Solution DC::construction(
 
     sol.sum_of_squares = std::accumulate(sq_distances.begin(), sq_distances.end(), 0.0);
     sol.routes_distances = utils::all_route_distances(I, sol);
+    sol.fairness = I.fairness;
     return sol;
 }

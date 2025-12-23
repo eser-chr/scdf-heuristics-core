@@ -149,7 +149,8 @@ core/CMakeFiles/core.dir/src/local_search.cpp.o: \
  /usr/include/c++/15.2.1/bits/locale_facets.tcc \
  /usr/include/c++/15.2.1/bits/basic_ios.tcc \
  /usr/include/c++/15.2.1/bits/ostream.tcc /usr/include/c++/15.2.1/istream \
- /usr/include/c++/15.2.1/bits/istream.tcc \
+ /usr/include/c++/15.2.1/bits/istream.tcc /usr/include/c++/15.2.1/cassert \
+ /usr/include/assert.h \
  /home/chris/Desktop/heuristics/core/include/solvers.hpp \
  /usr/include/c++/15.2.1/vector \
  /usr/include/c++/15.2.1/bits/stl_uninitialized.h \

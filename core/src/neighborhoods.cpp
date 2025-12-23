@@ -121,6 +121,18 @@ bool IntraRouteNeighborhood::is_valid(const GenericMove &mov) const
 
 double IntraRouteNeighborhood::calc_delta(const GenericMove &mov) const
 {
+    if (sol.fairness == "jain")
+        return calc_delta_jain(mov);
+    if (sol.fairness == "gini")
+        return calc_delta_gini(mov);
+    if (sol.fairness == "maxmin")
+        return calc_delta_maxmin(mov);
+    std::cerr << " Fairness is not valid. I refuse to continue with this sick job Bye !" << std::endl;
+    std::abort();
+}
+
+double IntraRouteNeighborhood::calc_delta_jain(const GenericMove &mov) const
+{
     assert(mov.type == type);
     int r = mov.data[0];
     int k = mov.data[1];
@@ -145,7 +157,7 @@ double IntraRouteNeighborhood::calc_delta(const GenericMove &mov) const
     int C = (l > 0) ? route[l - 1] : 0;
     int D = (l + 1 < (int)route.size()) ? route[l + 1] : 0;
 
-    int delta_d;
+    double delta_d;
 
     if (l == k + 1)
     {
@@ -173,6 +185,133 @@ double IntraRouteNeighborhood::calc_delta(const GenericMove &mov) const
     double J_new = (S_new * S_new) / (I.nK * Q_new);
 
     return delta_d + I.rho * (J_old - J_new);
+}
+
+double IntraRouteNeighborhood::calc_delta_maxmin(const GenericMove &mov) const
+{
+    assert(mov.type == type);
+    int r = mov.data[0];
+    int k = mov.data[1];
+    int l = mov.data[2];
+
+    if (k >= l)
+    {
+        std::cerr << "calc delta k>=l failed.assertion";
+        std::abort();
+    }
+
+    const auto &route = sol.routes[r];
+    const auto &dist = I.dist;
+
+    int x = route[k];
+    int y = route[l];
+
+    int A = (k > 0) ? route[k - 1] : 0;
+    int B = (k + 1 < (int)route.size()) ? route[k + 1] : 0;
+    int C = (l > 0) ? route[l - 1] : 0;
+    int D = (l + 1 < (int)route.size()) ? route[l + 1] : 0;
+
+    double delta_d;
+
+    if (l == k + 1)
+    {
+        delta_d =
+            dist[A][y] + dist[y][x] + dist[x][D] -
+            (dist[A][x] + dist[x][y] + dist[y][D]);
+    }
+    else
+    {
+        delta_d =
+            dist[A][y] + dist[y][B] + dist[C][x] + dist[x][D] -
+            (dist[A][x] + dist[x][B] + dist[C][y] + dist[y][D]);
+    }
+
+    // MAXMIN part
+    double max_old = sol.routes_distances[0];
+    double min_old = sol.routes_distances[0];
+    // bool is_my_route_involved = (r==0);
+    for (size_t route_idx = 1; route_idx < sol.routes.size(); ++route_idx)
+    {
+        if (sol.routes_distances[route_idx] > max_old)
+            max_old = sol.routes_distances[route_idx];
+        if (sol.routes_distances[route_idx] < min_old)
+            min_old = sol.routes_distances[route_idx];
+    }
+
+    double old_minmax = min_old / max_old;
+
+    double max_new = max_old;
+    double min_new = min_old;
+
+    if (sol.routes_distances[r] + delta_d > max_new)
+        max_new = sol.routes_distances[r];
+    if (sol.routes_distances[r] + delta_d < min_new)
+        min_new = sol.routes_distances[r];
+
+    double new_minmax = min_new / max_new;
+
+    double delta_minmax = new_minmax - old_minmax;
+
+    // ALL
+    return delta_d + I.rho * delta_minmax;
+}
+
+double IntraRouteNeighborhood::calc_delta_gini(const GenericMove &mov) const
+{
+    assert(mov.type == type);
+    int r = mov.data[0];
+    int k = mov.data[1];
+    int l = mov.data[2];
+
+    if (k >= l)
+    {
+        std::cerr << "calc delta k>=l failed.assertion";
+        std::abort();
+    }
+
+    const auto &route = sol.routes[r];
+    const auto &dist = I.dist;
+
+    int x = route[k];
+    int y = route[l];
+
+    int A = (k > 0) ? route[k - 1] : 0;
+    int B = (k + 1 < (int)route.size()) ? route[k + 1] : 0;
+    int C = (l > 0) ? route[l - 1] : 0;
+    int D = (l + 1 < (int)route.size()) ? route[l + 1] : 0;
+
+    double delta_d;
+
+    if (l == k + 1)
+    {
+        delta_d =
+            dist[A][y] + dist[y][x] + dist[x][D] -
+            (dist[A][x] + dist[x][y] + dist[y][D]);
+    }
+    else
+    {
+        delta_d =
+            dist[A][y] + dist[y][B] + dist[C][x] + dist[x][D] -
+            (dist[A][x] + dist[x][B] + dist[C][y] + dist[y][D]);
+    }
+
+    double old_gini_nominator = utils::gini_cefficient_nominator(I, sol.routes_distances);
+    double new_gini_nominator = old_gini_nominator;
+
+    assert(sol.routes.size() == sol.routes_distances.size());
+
+    for (size_t route_idx = 0; route_idx < sol.routes_distances.size(); route_idx++)
+    {
+        if (route_idx == r)
+            continue;
+        new_gini_nominator += std::abs(sol.routes_distances[r] + delta_d - sol.routes_distances[route_idx]);
+    }
+
+    double old_gini = 1 - old_gini_nominator / (I.nK * sol.total_distance);
+    double new_gini = 1 - new_gini_nominator / (I.nK * sol.total_distance + delta_d);
+    double delta_gini = new_gini - old_gini;
+
+    return delta_d + I.rho * delta_gini;
 }
 
 Solution IntraRouteNeighborhood::apply(const GenericMove &mov) const
@@ -448,7 +587,7 @@ std::vector<int> get_request_indices(Instance const &I, std::vector<int> const &
     {
         if (node < I.n + 1)
         {
-            to_rtn.push_back(node-1);
+            to_rtn.push_back(node - 1);
         }
     }
     return to_rtn;
@@ -471,7 +610,7 @@ std::vector<GenericMove> RequestMove::generate() const
 
 std::optional<GenericMove> RequestMove::generate_random(std::mt19937 &rng) const
 {
-    assert(sol.routes.size()==I.nK);
+    assert(sol.routes.size() == I.nK);
     std::uniform_int_distribution<int> routes_dist(0, I.nK - 1);
     for (size_t i = 0; i < this->MAX_TRIES_RANDOM; ++i)
     {
@@ -499,7 +638,19 @@ bool RequestMove::is_valid(GenericMove const &mov) const
     return true;
 }
 
-double RequestMove::calc_delta(GenericMove const &move) const
+double RequestMove::calc_delta(const GenericMove &mov) const
+{
+    if (sol.fairness == "jain")
+        return calc_delta_jain(mov);
+    if (sol.fairness == "gini")
+        return calc_delta_gini(mov);
+    if (sol.fairness == "maxmin")
+        return calc_delta_maxmin(mov);
+    std::cerr << " Fairness is not valid. I refuse to continue with this sick job Bye !" << std::endl;
+    std::abort();
+}
+
+double RequestMove::calc_delta_jain(GenericMove const &move) const
 {
     assert(move.type == type);
     int from = move.data[0];
@@ -508,9 +659,6 @@ double RequestMove::calc_delta(GenericMove const &move) const
 
     double d_old_from = sol.routes_distances[from];
     double d_old_to = sol.routes_distances[to];
-
-    // auto new_from = sol.routes[from];
-    // auto new_to = sol.routes[to];
 
     // Remove old delivery and pick up.
     //  Add new delivery and pick up.
@@ -533,26 +681,144 @@ double RequestMove::calc_delta(GenericMove const &move) const
     double d_new_from = utils::calc_route_distance(I, new_from);
     double d_new_to = utils::calc_route_distance(I, new_to);
 
-    //         double d_old = utils::route_distance(I, route);
-    //     double d_new = d_old + delta_d;
-
-    //     double S_old = sol.total_distance;
-    //     double Q_old = sol.sum_of_squares;
-
-    //     double S_new = S_old - d_old + d_new;
-    //     double Q_new = Q_old - d_old * d_old + d_new * d_new;
-
-    //     double J_old = (S_old * S_old) / (I.nK * Q_old);
-    //     double J_new = (S_new * S_new) / (I.nK * Q_new);
-
-    //     return delta_d + I.rho * (J_old - J_new);
-    // }
-
     double delta_d = d_new_from - d_old_from + d_new_to - d_old_to;
+    double sum_of_distances = sol.total_distance + (delta_d);
+    double sum_of_squares = sol.sum_of_squares - d_old_from * d_old_from - d_old_to * d_old_to +
+                            d_new_from * d_new_from + d_new_to * d_new_to;
 
-    // Needs to implement the delta in the fairness function.
-    return delta_d;
+    double old_jain = sol.total_distance * sol.total_distance / (I.nK * sol.sum_of_squares);
+    double new_jain = sum_of_distances * sum_of_distances / (I.nK * sum_of_squares);
 
+    return delta_d + I.rho * (new_jain - old_jain);
+}
+
+double RequestMove::calc_delta_maxmin(GenericMove const &move) const
+{
+    assert(move.type == type);
+    int from = move.data[0];
+    int to = move.data[1];
+    int request = move.data[2];
+
+    double d_old_from = sol.routes_distances[from];
+    double d_old_to = sol.routes_distances[to];
+
+    // Remove old delivery and pick up.
+    //  Add new delivery and pick up.
+    std::vector<int> new_from, new_to;
+    new_from.reserve(sol.routes[from].size() - 2);
+    new_to.reserve(sol.routes[to].size() + 2);
+
+    for (auto node : sol.routes[from])
+    {
+        if (node != request + 1 || node != request + I.n + 1)
+            new_from.push_back(node);
+    }
+
+    for (auto node : sol.routes[to])
+        new_to.push_back(node);
+
+    new_to.push_back(request + 1);
+    new_to.push_back(request + 1 + I.n);
+
+    double d_new_from = utils::calc_route_distance(I, new_from);
+    double d_new_to = utils::calc_route_distance(I, new_to);
+    double delta_d_from = d_new_from - d_old_from;
+    double delta_d_to = d_new_to - d_old_to;
+    double delta_d = delta_d_from + delta_d_to;
+
+    // MAXMIN part
+    double max_old = sol.routes_distances[0];
+    double min_old = sol.routes_distances[0];
+    // bool is_my_route_involved = (r==0);
+    for (size_t route_idx = 1; route_idx < sol.routes.size(); ++route_idx)
+    {
+        if (sol.routes_distances[route_idx] > max_old)
+            max_old = sol.routes_distances[route_idx];
+        if (sol.routes_distances[route_idx] < min_old)
+            min_old = sol.routes_distances[route_idx];
+    }
+
+    double old_minmax = min_old / max_old;
+
+    double max_new = max_old;
+    double min_new = min_old;
+
+    if (sol.routes_distances[from] + delta_d_from > max_new)
+        max_new = sol.routes_distances[from];
+    if (sol.routes_distances[from] + delta_d_from < min_new)
+        min_new = sol.routes_distances[from];
+
+    if (sol.routes_distances[to] + delta_d_to > max_new)
+        max_new = sol.routes_distances[to];
+    if (sol.routes_distances[to] + delta_d_to < min_new)
+        min_new = sol.routes_distances[to];
+
+    double new_minmax = min_new / max_new;
+
+    double delta_minmax = new_minmax - old_minmax;
+
+    return delta_d + I.rho * delta_minmax;
+}
+
+double RequestMove::calc_delta_gini(GenericMove const &move) const
+{
+    assert(move.type == type);
+    int from = move.data[0];
+    int to = move.data[1];
+    int request = move.data[2];
+
+    double d_old_from = sol.routes_distances[from];
+    double d_old_to = sol.routes_distances[to];
+
+    // Remove old delivery and pick up.
+    //  Add new delivery and pick up.
+    std::vector<int> new_from, new_to;
+    new_from.reserve(sol.routes[from].size() - 2);
+    new_to.reserve(sol.routes[to].size() + 2);
+
+    for (auto node : sol.routes[from])
+    {
+        if (node != request + 1 || node != request + I.n + 1)
+            new_from.push_back(node);
+    }
+
+    for (auto node : sol.routes[to])
+        new_to.push_back(node);
+
+    new_to.push_back(request + 1);
+    new_to.push_back(request + 1 + I.n);
+
+    double d_new_from = utils::calc_route_distance(I, new_from);
+    double d_new_to = utils::calc_route_distance(I, new_to);
+    double delta_d_from = d_new_from - d_old_from;
+    double delta_d_to = d_new_to - d_old_to;
+    double delta_d = delta_d_from + delta_d_to;
+
+    double old_gini_nominator = utils::gini_cefficient_nominator(I, sol.routes_distances);
+    double new_gini_nominator = old_gini_nominator;
+
+    assert(sol.routes.size() == sol.routes_distances.size());
+
+    for (size_t route_idx = 0; route_idx < sol.routes_distances.size(); route_idx++)
+    {
+        if (route_idx == from)
+            continue;
+        new_gini_nominator += std::abs(sol.routes_distances[from] + delta_d - sol.routes_distances[route_idx]);
+    }
+    for (size_t route_idx = 0; route_idx < sol.routes_distances.size(); route_idx++)
+    {
+        if (route_idx == to)
+            continue;
+        new_gini_nominator += std::abs(sol.routes_distances[to] + delta_d - sol.routes_distances[route_idx]);
+    }
+
+    new_gini_nominator -= std::abs(sol.routes_distances[from] - sol.routes_distances[to]);
+
+    double old_gini = 1 - old_gini_nominator / (I.nK * sol.total_distance);
+    double new_gini = 1 - new_gini_nominator / (I.nK * sol.total_distance + delta_d);
+    double delta_gini = new_gini - old_gini;
+
+    return delta_d + I.rho * delta_gini;
 }
 
 Solution RequestMove::apply(GenericMove const &move) const
@@ -585,15 +851,13 @@ Solution RequestMove::apply(GenericMove const &move) const
     double d_new_from = utils::calc_route_distance(I, new_from);
     double d_new_to = utils::calc_route_distance(I, new_to);
 
-    
-
     new_sol.routes_distances[from] = d_new_from;
     new_sol.routes_distances[to] = d_new_to;
     new_sol.total_distance = std::accumulate(new_sol.routes_distances.begin(), new_sol.routes_distances.end(), 0.0);
     new_sol.sum_of_squares = std::accumulate(new_sol.routes_distances.begin(), new_sol.routes_distances.end(), 0.0, [](double sum, double x)
                                              { return sum + x * x; });
 
-    return sol ;
+    return sol;
 }
 
 // =====================================================================
@@ -694,9 +958,20 @@ bool TwoOptNeighborhood::is_valid(const GenericMove &mov) const
 
     return true;
 }
-
 double TwoOptNeighborhood::calc_delta(const GenericMove &mov) const
 {
+    if (sol.fairness == "jain")
+        return calc_delta_jain(mov);
+    if (sol.fairness == "gini")
+        return calc_delta_gini(mov);
+    if (sol.fairness == "maxmin")
+        return calc_delta_maxmin(mov);
+    std::cerr << " Fairness is not valid. I refuse to continue with this sick job Bye !" << std::endl;
+    std::abort();
+}
+double TwoOptNeighborhood::calc_delta_jain(const GenericMove &mov) const
+{
+    assert(mov.type == type);
     int r = mov.data[0];
     int i = mov.data[1];
     int j = mov.data[2];
@@ -727,6 +1002,90 @@ double TwoOptNeighborhood::calc_delta(const GenericMove &mov) const
     double J_new = (S_new * S_new) / (I.nK * Q_new);
 
     return delta_d + I.rho * (J_old - J_new);
+}
+double TwoOptNeighborhood::calc_delta_maxmin(const GenericMove &mov) const
+{
+    int r = mov.data[0];
+    int i = mov.data[1];
+    int j = mov.data[2];
+
+    const auto &route = sol.routes[r];
+    const auto &dist = I.dist;
+
+    int A = (i > 0) ? route[i - 1] : 0;
+    int x = route[i];
+    int y = route[j];
+    int B = (j + 1 < (int)route.size()) ? route[j + 1] : 0;
+
+    int removed = dist[A][x] + dist[y][B];
+    int added = dist[A][y] + dist[x][B];
+
+    double delta_d = added - removed;
+
+    // MAXMIN part
+    double max_old = sol.routes_distances[0];
+    double min_old = sol.routes_distances[0];
+    // bool is_my_route_involved = (r==0);
+    for (size_t route_idx = 1; route_idx < sol.routes.size(); ++route_idx)
+    {
+        if (sol.routes_distances[route_idx] > max_old)
+            max_old = sol.routes_distances[route_idx];
+        if (sol.routes_distances[route_idx] < min_old)
+            min_old = sol.routes_distances[route_idx];
+    }
+
+    double old_minmax = min_old / max_old;
+
+    double max_new = max_old;
+    double min_new = min_old;
+
+    if (sol.routes_distances[r] + delta_d > max_new)
+        max_new = sol.routes_distances[r];
+    if (sol.routes_distances[r] + delta_d < min_new)
+        min_new = sol.routes_distances[r];
+
+    double new_minmax = min_new / max_new;
+
+    double delta_minmax = new_minmax - old_minmax;
+
+    return delta_d + I.rho * delta_minmax;
+}
+double TwoOptNeighborhood::calc_delta_gini(const GenericMove &mov) const
+{
+    int r = mov.data[0];
+    int i = mov.data[1];
+    int j = mov.data[2];
+
+    const auto &route = sol.routes[r];
+    const auto &dist = I.dist;
+
+    int A = (i > 0) ? route[i - 1] : 0;
+    int x = route[i];
+    int y = route[j];
+    int B = (j + 1 < (int)route.size()) ? route[j + 1] : 0;
+
+    int removed = dist[A][x] + dist[y][B];
+    int added = dist[A][y] + dist[x][B];
+
+    double delta_d = added - removed;
+
+    double old_gini_nominator = utils::gini_cefficient_nominator(I, sol.routes_distances);
+    double new_gini_nominator = old_gini_nominator;
+
+    assert(sol.routes.size() == sol.routes_distances.size());
+
+    for (size_t route_idx = 0; route_idx < sol.routes_distances.size(); route_idx++)
+    {
+        if (route_idx == r)
+            continue;
+        new_gini_nominator += std::abs(sol.routes_distances[r] + delta_d - sol.routes_distances[route_idx]);
+    }
+
+    double old_gini = 1 - old_gini_nominator / (I.nK * sol.total_distance);
+    double new_gini = 1 - new_gini_nominator / (I.nK * sol.total_distance + delta_d);
+    double delta_gini = new_gini - old_gini;
+
+    return delta_d + I.rho * delta_gini;
 }
 
 Solution TwoOptNeighborhood::apply(const GenericMove &mov) const

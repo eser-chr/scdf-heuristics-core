@@ -9,11 +9,16 @@ void Instance::printme() const
 {
     std::cout << name << " \n";
     std::cout << "---------" << "\n";
-    std::cout << n << " " << nK << " " << C << " " << gamma << " " << rho << std::endl;
+    std::cout << n << " " << nK << " " << C << " " << gamma << " " << rho << "\n";
+    std::cout<< "Fairness method: "<<fairness<<std::endl;
 }
 
-Instance::Instance(const std::string &path)
+Instance::Instance(const std::string &path, std::string const &fairness):fairness(fairness)
 {
+    if(fairness!= "gini" && fairness!="jain" && fairness != "maxmin"){
+        std::cerr <<"Instance constructor.- Not correct fairness"<<std::endl;
+        std::abort();
+    }
     load_from_file(path);
     if (!is_instance_correct())
     {

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <cassert>
 #include <unordered_set>
 #include "structures.hpp"
 namespace utils
@@ -35,7 +36,8 @@ namespace utils
         return d;
     }
 
-    double calc_route_distance(Instance const& I, Solution const & sol, int route_idx){
+    double calc_route_distance(Instance const &I, Solution const &sol, int route_idx)
+    {
         return calc_route_distance(I, sol.routes[route_idx]);
     }
 
@@ -88,6 +90,21 @@ namespace utils
 
         return min / max;
     }
+
+    double gini_cefficient_nominator(Instance const &I, std::vector<double> const &dists)
+    {
+        double nominator = 0.0;
+
+        for (size_t i = 0; i < dists.size(); ++i)
+        {
+            for (size_t j = i + 1; j < dists.size(); ++j)
+            { // Avoid double & self counting
+                nominator += std::abs(dists[i] - dists[j]);
+            }
+        }
+        return nominator;
+    }
+
     double gini_cefficient(Instance const &I, std::vector<double> const &dists)
     {
         double denominator = 0.0;
@@ -109,7 +126,7 @@ namespace utils
     }
 
     bool is_route_feasible(const Instance &inst,
-                              const std::vector<int> &route)
+                           const std::vector<int> &route)
     {
         int load = 0;
         std::unordered_set<int> picked;
@@ -140,22 +157,30 @@ namespace utils
         return (int)dropped.size() >= inst.gamma;
     }
 
-    double objective(const Instance &inst, const Solution &sol)
-    {
-        auto dists = all_route_distances(inst, sol);
+    // double objective(const Instance &inst, const Solution &sol)
+    // {
+    //     auto dists = all_route_distances(inst, sol);
 
-        double sum_dist = std::accumulate(dists.begin(), dists.end(), 0.0);
-        double fairness = jain_fairness(inst, dists);
+    //     double sum_dist = std::accumulate(dists.begin(), dists.end(), 0.0);
+    //     double fairness = jain_fairness(inst, dists);
 
-        return sum_dist + inst.rho * (1.0 - fairness);
-    }
-    double objective(Instance const &I, Solution const &sol,
-                     std::function<double(Instance const &I, std::vector<double> const &dists)> fairness_func)
+    //     return sum_dist + inst.rho * (1.0 - fairness);
+    // }
+    double objective(Instance const &I, Solution const &sol)
     {
+        assert(I.fairness == sol.fairness);
         auto dists = all_route_distances(I, sol);
 
         double sum_dist = std::accumulate(dists.begin(), dists.end(), 0.0);
-        double fairness = fairness_func(I, dists);
+        double fairness;
+        if (sol.fairness == "jain")
+            fairness = jain_fairness(I, dists);
+        if (sol.fairness == "gini")
+            fairness = gini_cefficient(I, dists);
+        if (sol.fairness == "maxmin")
+            fairness = max_min_fairness(I, dists);
+
+        // double fairness = fairness_func(I, dists);
 
         return sum_dist + I.rho * (1.0 - fairness);
     }

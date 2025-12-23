@@ -1,0 +1,49 @@
+path,N,method,duration,objective
+../instances/50/test/instance32_nreq50_nveh2_gamma45.txt,50,DC ,0.885359,1551.03
+../instances/50/test/instance32_nreq50_nveh2_gamma45.txt,50,RC,0.699238,1823.24
+../instances/50/test/instance32_nreq50_nveh2_gamma45.txt,50,BS,1.59641,1486
+../instances/50/test/instance32_nreq50_nveh2_gamma45.txt,50,LS,0.258337,1551.03
+../instances/50/test/instance32_nreq50_nveh2_gamma45.txt,50,VND,12.0147,1028.27
+../instances/50/test/instance32_nreq50_nveh2_gamma45.txt,50,SA,0.025809,1550.39
+../instances/50/test/instance49_nreq50_nveh2_gamma44.txt,50,DC ,0.572078,1663.61
+../instances/50/test/instance49_nreq50_nveh2_gamma44.txt,50,RC,0.671196,1783.48
+../instances/50/test/instance49_nreq50_nveh2_gamma44.txt,50,BS,1.02272,1453.81
+../instances/50/test/instance49_nreq50_nveh2_gamma44.txt,50,LS,0.177334,1663.61
+../instances/50/test/instance49_nreq50_nveh2_gamma44.txt,50,VND,11.918,1072.12
+../instances/50/test/instance49_nreq50_nveh2_gamma44.txt,50,SA,0.004077,1661.28
+../instances/50/test/instance55_nreq50_nveh2_gamma40.txt,50,DC ,0.578621,1633.06
+../instances/50/test/instance55_nreq50_nveh2_gamma40.txt,50,RC,0.649234,1809.39
+../instances/50/test/instance55_nreq50_nveh2_gamma40.txt,50,BS,0.804768,1369.51
+../instances/50/test/instance55_nreq50_nveh2_gamma40.txt,50,LS,0.184177,1633.06
+../instances/50/test/instance55_nreq50_nveh2_gamma40.txt,50,VND,13.0889,1103.41
+../instances/50/test/instance55_nreq50_nveh2_gamma40.txt,50,SA,0.006332,1632.52
+../instances/50/test/instance39_nreq50_nveh2_gamma43.txt,50,DC ,0.582609,1606.03
+../instances/50/test/instance39_nreq50_nveh2_gamma43.txt,50,RC,0.670795,1610.35
+../instances/50/test/instance39_nreq50_nveh2_gamma43.txt,50,BS,1.20384,1439.46
+../instances/50/test/instance39_nreq50_nveh2_gamma43.txt,50,LS,0.176783,1606.03
+../instances/50/test/instance39_nreq50_nveh2_gamma43.txt,50,VND,11.3397,1123.78
+../instances/50/test/instance39_nreq50_nveh2_gamma43.txt,50,SA,7.39206,1595.25
+../instances/100/test/instance51_nreq100_nveh2_gamma93.txt,100,DC ,0.864239,4148.69
+../instances/100/test/instance51_nreq100_nveh2_gamma93.txt,100,RC,1.02312,4550.33
+../instances/100/test/instance51_nreq100_nveh2_gamma93.txt,100,BS,3.65974,3938.06
+../instances/100/test/instance51_nreq100_nveh2_gamma93.txt,100,LS,0.321386,4148.69
+../instances/100/test/instance51_nreq100_nveh2_gamma93.txt,100,VND,18.1334,3114.84
+../instances/100/test/instance51_nreq100_nveh2_gamma93.txt,100,SA,0.370588,4145.09
+../instances/100/test/instance49_nreq100_nveh2_gamma87.txt,100,DC ,0.815798,3783.89
+../instances/100/test/instance49_nreq100_nveh2_gamma87.txt,100,RC,0.938839,4028.9
+../instances/100/test/instance49_nreq100_nveh2_gamma87.txt,100,BS,3.41946,3391.7
+../instances/100/test/instance49_nreq100_nveh2_gamma87.txt,100,LS,0.309864,3783.89
+../instances/100/test/instance49_nreq100_nveh2_gamma87.txt,100,VND,20.4521,2745.33
+../instances/100/test/instance49_nreq100_nveh2_gamma87.txt,100,SA,0.007293,3783.03
+../instances/100/test/instance58_nreq100_nveh2_gamma91.txt,100,DC ,0.842448,4379.59
+../instances/100/test/instance58_nreq100_nveh2_gamma91.txt,100,RC,0.970079,4527.75
+../instances/100/test/instance58_nreq100_nveh2_gamma91.txt,100,BS,3.24229,4036.58
+../instances/100/test/instance58_nreq100_nveh2_gamma91.txt,100,LS,0.314213,4379.59
+../instances/100/test/instance58_nreq100_nveh2_gamma91.txt,100,VND,27.6911,2725.93
+../instances/100/test/instance58_nreq100_nveh2_gamma91.txt,100,SA,0.03232,4375.82
+../instances/100/test/instance53_nreq100_nveh2_gamma85.txt,100,DC ,0.847007,3849.48
+../instances/100/test/instance53_nreq100_nveh2_gamma85.txt,100,RC,0.964979,4046.87
+../instances/100/test/instance53_nreq100_nveh2_gamma85.txt,100,BS,2.88159,3630.29
+../instances/100/test/instance53_nreq100_nveh2_gamma85.txt,100,LS,0.295437,3849.48
+../instances/100/test/instance53_nreq100_nveh2_gamma85.txt,100,VND,22.8319,2656.08
+../instances/100/test/instance53_nreq100_nveh2_gamma85.txt,100,SA,0.069361,3847.34

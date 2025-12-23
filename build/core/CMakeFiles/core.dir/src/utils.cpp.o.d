@@ -161,8 +161,8 @@ core/CMakeFiles/core.dir/src/utils.cpp.o: \
  /usr/include/c++/15.2.1/bits/basic_ios.tcc \
  /usr/include/c++/15.2.1/bits/ostream.tcc /usr/include/c++/15.2.1/istream \
  /usr/include/c++/15.2.1/bits/istream.tcc /usr/include/c++/15.2.1/sstream \
- /usr/include/c++/15.2.1/bits/sstream.tcc \
- /usr/include/c++/15.2.1/unordered_set \
+ /usr/include/c++/15.2.1/bits/sstream.tcc /usr/include/c++/15.2.1/cassert \
+ /usr/include/assert.h /usr/include/c++/15.2.1/unordered_set \
  /usr/include/c++/15.2.1/bits/unordered_set.h \
  /usr/include/c++/15.2.1/bits/hashtable.h \
  /usr/include/c++/15.2.1/bits/hashtable_policy.h \
