@@ -4,6 +4,7 @@
 #include <cassert>
 #include <unordered_set>
 #include "structures.hpp"
+
 namespace utils
 {
     // Returns the exscan of cargo

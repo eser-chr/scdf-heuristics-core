@@ -5,8 +5,10 @@ PRIVATE
     src/beam_search.cpp
     src/clustering.cpp
     src/construction.cpp
+    src/genetic.cpp
     src/grasp.cpp
     src/instance.cpp
+    src/large_neighborhood.cpp
     src/local_search.cpp
     src/neighborhoods.cpp
     src/random.cpp

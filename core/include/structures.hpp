@@ -54,6 +54,7 @@ struct Solution
     Solution() = default;
     void write_solution(const std::string &path, const std::string &instance_name) const;
     bool is_solution_feasible(Instance const& I);
+    void compute_cached_values_from_routes(Instance const& I);
 };
 
 namespace utils

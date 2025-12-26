@@ -137,64 +137,103 @@ int main(int argc, char **argv)
                 all_res.push_back(res);
             }
             
-            { // LS
+            // { // LS
                 
-                std::cout<<" ls";
+            //     std::cout<<" ls";
+            //     Timer t;
+            //     int total_iter = 0;
+            //     auto sol_ls = LS::local_search(I, dr_sol, neighborhoods[1], StepFunction::first_improvement, stopping_criterion);
+            //     double exec_time = t.get_time();
+            //     if (!sol_ls.is_solution_feasible(I))
+            //     {
+            //         std::cerr << "Solution is not feasible ERROR?";
+            //     }
+            //     double objective = utils::objective(I, sol_ls);
+                
+            //     RES res;
+            //     res.duration = exec_time;
+            //     res.method = "LS";
+            //     res.instance_path = instance;
+            //     res.objective = objective;
+            //     res.N = N;
+            //     all_res.push_back(res);
+            // }
+            // { // VND
+                
+            //     std::cout<<" vnd";
+            //     Timer t;
+            //     int total_iter = 0;
+            //     auto sol_vnd = VND::vnd(I, dr_sol, neighborhoods, StepFunction::first_improvement, stopping_criterion);
+            //     double exec_time = t.get_time();
+            //     if (!sol_vnd.is_solution_feasible(I))
+            //     {
+            //         std::cerr << "Solution is not feasible ERROR?";
+            //     }
+            //     double objective = utils::objective(I, sol_vnd);
+                
+            //     RES res;
+            //     res.duration = exec_time;
+            //     res.method = "VND";
+            //     res.instance_path = instance;
+            //     res.objective = objective;
+            //     res.N = N;
+            //     all_res.push_back(res);
+            // }
+            // { // SA
+                
+            //     std::cout<<" sa";
+            //     int total_iters = 0;
+            //     Timer t;
+            //     auto sol_sa = SA::simulated_annealing(I, dr_sol, neighborhoods,
+            //                                           100.0, 1e-3, 0.97, StepFunction::first_improvement, stopping_criterion, &total_iters);
+            //     if (total_iters == 0)
+            //         std::cout << "I have done no move \n";
+
+            //     double exec_time = t.get_time();
+            //     double objective = utils::objective(I, sol_sa);
+
+            //     RES res;
+            //     res.duration = exec_time;
+            //     res.method = "SA";
+            //     res.instance_path = instance;
+            //     res.objective = objective;
+            //     res.N = N;
+            //     all_res.push_back(res);
+            // }
+
+            // {
+            //     std::cout<<" LN";
+            //     Timer t;
+            //     auto ln_sol = LN::large_neighborhood(I, dr_sol, 5); // after tuning
+            //     double exec_time = t.get_time();
+            //     if (!ln_sol.is_solution_feasible(I))
+            //     {
+            //         std::cerr << "Solution is not feasible ERROR?";
+            //     }
+            //     double objective = utils::objective(I, ln_sol);
+                
+            //     RES res;
+            //     res.duration = exec_time;
+            //     res.method = "LN";
+            //     res.instance_path = instance;
+            //     res.objective = objective;
+            //     res.N = N;
+            //     all_res.push_back(res);
+            // }
+            {
+                std::cout<<" GA";
                 Timer t;
-                int total_iter = 0;
-                auto sol_ls = LS::local_search(I, dr_sol, neighborhoods[1], StepFunction::first_improvement, stopping_criterion);
+                auto ga_sol = GA::genetic_algorithm(I, 10,1, 20); // after tuning
                 double exec_time = t.get_time();
-                if (!sol_ls.is_solution_feasible(I))
+                if (!ga_sol.is_solution_feasible(I))
                 {
                     std::cerr << "Solution is not feasible ERROR?";
                 }
-                double objective = utils::objective(I, sol_ls);
+                double objective = utils::objective(I, ga_sol);
                 
                 RES res;
                 res.duration = exec_time;
-                res.method = "LS";
-                res.instance_path = instance;
-                res.objective = objective;
-                res.N = N;
-                all_res.push_back(res);
-            }
-            { // VND
-                
-                std::cout<<" vnd";
-                Timer t;
-                int total_iter = 0;
-                auto sol_vnd = VND::vnd(I, dr_sol, neighborhoods, StepFunction::first_improvement, stopping_criterion);
-                double exec_time = t.get_time();
-                if (!sol_vnd.is_solution_feasible(I))
-                {
-                    std::cerr << "Solution is not feasible ERROR?";
-                }
-                double objective = utils::objective(I, sol_vnd);
-                
-                RES res;
-                res.duration = exec_time;
-                res.method = "VND";
-                res.instance_path = instance;
-                res.objective = objective;
-                res.N = N;
-                all_res.push_back(res);
-            }
-            { // SA
-                
-                std::cout<<" sa";
-                int total_iters = 0;
-                Timer t;
-                auto sol_sa = SA::simulated_annealing(I, dr_sol, neighborhoods,
-                                                      100.0, 1e-3, 0.97, StepFunction::first_improvement, stopping_criterion, &total_iters);
-                if (total_iters == 0)
-                    std::cout << "I have done no move \n";
-
-                double exec_time = t.get_time();
-                double objective = utils::objective(I, sol_sa);
-
-                RES res;
-                res.duration = exec_time;
-                res.method = "SA";
+                res.method = "GA";
                 res.instance_path = instance;
                 res.objective = objective;
                 res.N = N;

@@ -202,6 +202,30 @@ src/construction.cpp.s:
 	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/construction.cpp.s
 .PHONY : src/construction.cpp.s
 
+src/genetic.o: src/genetic.cpp.o
+.PHONY : src/genetic.o
+
+# target to build an object file
+src/genetic.cpp.o:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/genetic.cpp.o
+.PHONY : src/genetic.cpp.o
+
+src/genetic.i: src/genetic.cpp.i
+.PHONY : src/genetic.i
+
+# target to preprocess a source file
+src/genetic.cpp.i:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/genetic.cpp.i
+.PHONY : src/genetic.cpp.i
+
+src/genetic.s: src/genetic.cpp.s
+.PHONY : src/genetic.s
+
+# target to generate assembly for a file
+src/genetic.cpp.s:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/genetic.cpp.s
+.PHONY : src/genetic.cpp.s
+
 src/grasp.o: src/grasp.cpp.o
 .PHONY : src/grasp.o
 
@@ -249,6 +273,30 @@ src/instance.s: src/instance.cpp.s
 src/instance.cpp.s:
 	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/instance.cpp.s
 .PHONY : src/instance.cpp.s
+
+src/large_neighborhood.o: src/large_neighborhood.cpp.o
+.PHONY : src/large_neighborhood.o
+
+# target to build an object file
+src/large_neighborhood.cpp.o:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/large_neighborhood.cpp.o
+.PHONY : src/large_neighborhood.cpp.o
+
+src/large_neighborhood.i: src/large_neighborhood.cpp.i
+.PHONY : src/large_neighborhood.i
+
+# target to preprocess a source file
+src/large_neighborhood.cpp.i:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/large_neighborhood.cpp.i
+.PHONY : src/large_neighborhood.cpp.i
+
+src/large_neighborhood.s: src/large_neighborhood.cpp.s
+.PHONY : src/large_neighborhood.s
+
+# target to generate assembly for a file
+src/large_neighborhood.cpp.s:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/large_neighborhood.cpp.s
+.PHONY : src/large_neighborhood.cpp.s
 
 src/local_search.o: src/local_search.cpp.o
 .PHONY : src/local_search.o
@@ -436,12 +484,18 @@ help:
 	@echo "... src/construction.o"
 	@echo "... src/construction.i"
 	@echo "... src/construction.s"
+	@echo "... src/genetic.o"
+	@echo "... src/genetic.i"
+	@echo "... src/genetic.s"
 	@echo "... src/grasp.o"
 	@echo "... src/grasp.i"
 	@echo "... src/grasp.s"
 	@echo "... src/instance.o"
 	@echo "... src/instance.i"
 	@echo "... src/instance.s"
+	@echo "... src/large_neighborhood.o"
+	@echo "... src/large_neighborhood.i"
+	@echo "... src/large_neighborhood.s"
 	@echo "... src/local_search.o"
 	@echo "... src/local_search.i"
 	@echo "... src/local_search.s"
