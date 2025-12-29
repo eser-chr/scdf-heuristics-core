@@ -5,6 +5,7 @@ PRIVATE
     src/beam_search.cpp
     src/clustering.cpp
     src/construction.cpp
+    src/encoding.cpp
     src/genetic.cpp
     src/grasp.cpp
     src/instance.cpp

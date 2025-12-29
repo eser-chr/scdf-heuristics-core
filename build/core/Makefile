@@ -202,6 +202,30 @@ src/construction.cpp.s:
 	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/construction.cpp.s
 .PHONY : src/construction.cpp.s
 
+src/encoding.o: src/encoding.cpp.o
+.PHONY : src/encoding.o
+
+# target to build an object file
+src/encoding.cpp.o:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/encoding.cpp.o
+.PHONY : src/encoding.cpp.o
+
+src/encoding.i: src/encoding.cpp.i
+.PHONY : src/encoding.i
+
+# target to preprocess a source file
+src/encoding.cpp.i:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/encoding.cpp.i
+.PHONY : src/encoding.cpp.i
+
+src/encoding.s: src/encoding.cpp.s
+.PHONY : src/encoding.s
+
+# target to generate assembly for a file
+src/encoding.cpp.s:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/src/encoding.cpp.s
+.PHONY : src/encoding.cpp.s
+
 src/genetic.o: src/genetic.cpp.o
 .PHONY : src/genetic.o
 
@@ -484,6 +508,9 @@ help:
 	@echo "... src/construction.o"
 	@echo "... src/construction.i"
 	@echo "... src/construction.s"
+	@echo "... src/encoding.o"
+	@echo "... src/encoding.i"
+	@echo "... src/encoding.s"
 	@echo "... src/genetic.o"
 	@echo "... src/genetic.i"
 	@echo "... src/genetic.s"

@@ -133,26 +133,32 @@ namespace LN
 
 namespace GA
 {
-    class Encoding
-    {
-        using dna_t = std::vector<std::vector<bool>>;
-        // Check if you can use a single vector with offset
-        dna_t dna;
-
-    public:
-        Encoding() = default;
-        Encoding(dna_t &&dna);
-        Encoding(Instance const &I, Solution const &sol);
-
-        // Decoding process. Uses greedy algo from DC construction to
-        // reconstruct a solution from an encoding
-        Solution to_sol(Instance const &I) const;
-        bool is_encoding_correct(Instance const &I) const;
-        Encoding operator+(Encoding const &other) const;
-        Encoding add(Instance const& I, Encoding const &other) const;
-        // void _resolve_degeneracies(dna_t & child);
-        void set_vehicle_for_request(int vehicle, int request);
+    struct BestSolution{
+        double objective;
+        Solution sol;
     };
+    // class Encoding
+    // {
+    //     using dna_t = std::vector<std::vector<bool>>;
+    //     // Check if you can use a single vector with offset
+    //     dna_t dna;
+
+    // public:
+    //     Encoding() = default;
+    //     Encoding(dna_t &&dna);
+    //     Encoding(Instance const &I, Solution const &sol);
+
+    //     // Decoding process. Uses greedy algo from DC construction to
+    //     // reconstruct a solution from an encoding
+    //     Solution to_sol(Instance const &I) const;
+    //     bool is_encoding_correct(Instance const &I) const;
+    //     Encoding operator+(Encoding const &other) const;
+    //     Encoding add(Instance const& I, Encoding const &other) const;
+
+    //     int total_num_of_requests();
+    //     // void _resolve_degeneracies(dna_t & child);
+    //     void set_vehicle_for_request(int vehicle, int request);
+    // };
 
     std::vector<Encoding> generate_initial_population(Instance const &I, int k1);
     std::vector<Encoding> reproduce(Instance const &I, std::vector<Encoding> parents);
@@ -167,5 +173,5 @@ namespace GA
      * @param iters Number of iterations-generations
      */
     Solution genetic_algorithm(Instance const &I, int k1, int k2, int iters);
-
+    BestSolution get_best_solution(Instance const& I, std::vector<Encoding> encodings);
 };

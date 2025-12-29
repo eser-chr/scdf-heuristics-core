@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/core.dir/src/clustering.cpp.o.d"
   "CMakeFiles/core.dir/src/construction.cpp.o"
   "CMakeFiles/core.dir/src/construction.cpp.o.d"
+  "CMakeFiles/core.dir/src/encoding.cpp.o"
+  "CMakeFiles/core.dir/src/encoding.cpp.o.d"
   "CMakeFiles/core.dir/src/genetic.cpp.o"
   "CMakeFiles/core.dir/src/genetic.cpp.o.d"
   "CMakeFiles/core.dir/src/grasp.cpp.o"

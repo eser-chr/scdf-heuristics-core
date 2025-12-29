@@ -223,7 +223,7 @@ int main(int argc, char **argv)
             {
                 std::cout<<" GA";
                 Timer t;
-                auto ga_sol = GA::genetic_algorithm(I, 10,1, 20); // after tuning
+                auto ga_sol = GA::genetic_algorithm(I, 15 ,1, 20); // after tuning
                 double exec_time = t.get_time();
                 if (!ga_sol.is_solution_feasible(I))
                 {

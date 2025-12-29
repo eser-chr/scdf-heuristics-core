@@ -1,5 +1,6 @@
 #include <cassert>
 #include <iostream>
+#include <limits>
 #include "structures.hpp"
 #include "solvers.hpp"
 
@@ -9,260 +10,300 @@ std::vector<int> build_route_greedy(
     const Instance &I,
     const std::vector<int> &reqs);
 
-GA::Encoding::Encoding(Instance const &I, Solution const &sol)
-{
+std::vector<int> create_track_route(Instance const &I, int beam_width, std::vector<int> const &requests);
 
-    dna.reserve(I.nK);
-    for (size_t j = 0; j < I.nK; j++)
-    {
-        dna.emplace_back(I.n, false);
-    }
+// GA::Encoding::Encoding(Instance const &I, Solution const &sol)
+// {
 
-    for (size_t j = 0; j < sol.routes.size(); j++)
-    {
-        auto const route = sol.routes[j];
-        for (auto node : route)
-        {
-            assert(node != 0);
-            if (node <= I.n)
-            {
-                dna[j][node - 1] = true;
-            }
-        }
-    }
-}
+//     dna.reserve(I.nK);
+//     for (size_t j = 0; j < I.nK; j++)
+//     {
+//         dna.emplace_back(I.n, false);
+//     }
 
-void GA::Encoding::set_vehicle_for_request(int vehicle, int request)
-{
-    int rows = dna.size();
-    int cols = dna[0].size();
+//     for (size_t j = 0; j < sol.routes.size(); j++)
+//     {
+//         auto const route = sol.routes[j];
+//         for (auto node : route)
+//         {
+//             assert(node != 0);
+//             if (node <= I.n)
+//             {
+//                 dna[j][node - 1] = true;
+//             }
+//         }
+//     }
+// }
 
-    for (size_t i = 0; i < rows; i++)
-    {
-        dna[i][request] = (vehicle == (int)i);
-    }
-}
+// void GA::Encoding::set_vehicle_for_request(int vehicle, int request)
+// {
+//     int rows = dna.size();
+//     int cols = dna[0].size();
 
-bool GA::Encoding::is_encoding_correct(Instance const &I) const
-{
-    size_t rows = dna.size();
-    size_t cols = dna[0].size();
+//     for (size_t i = 0; i < rows; i++)
+//     {
+//         dna[i][request] = (vehicle == (int)i);
+//     }
+// }
 
-    for (auto col : dna)
-    {
-        if (col.size() != cols)
-            return false;
-    }
+// bool GA::Encoding::is_encoding_correct(Instance const &I) const
+// {
+//     size_t rows = dna.size();
+//     size_t cols = dna[0].size();
 
-    for (size_t j = 0; j < cols; j++)
-    {
-        // Here we check if a request has more or equal to two routes.
-        // 0, 1 are fine.
+//     for (auto col : dna)
+//     {
+//         if (col.size() != cols)
+//             return false;
+//     }
 
-        bool flag = true;
-        for (size_t i = 0; i < rows; i++)
-        {
-            // If flag was already false i.e a previous route had this request
-            // and  also the current route has this then something is wrong
-            if (!flag && dna[i][j])
-                return false;
-            flag = !dna[i][j];
-        }
-    }
+//     for (size_t j = 0; j < cols; j++)
+//     {
+//         // Here we check if a request has more or equal to two routes.
+//         // 0, 1 are fine.
 
-    if (cols != I.n)
-    {
-        std::cerr << " cols of encoding do not match requests in Instance" << std::endl;
-        return false;
-    }
+//         bool flag = true;
+//         for (size_t i = 0; i < rows; i++)
+//         {
+//             // If flag was already false i.e a previous route had this request
+//             // and  also the current route has this then something is wrong
+//             if (!flag && dna[i][j])
+//                 return false;
+//             flag = !dna[i][j];
+//         }
+//     }
 
-    return true;
-}
+//     if (cols != I.n)
+//     {
+//         std::cerr << " cols of encoding do not match requests in Instance" << std::endl;
+//         return false;
+//     }
 
-Solution GA::Encoding::to_sol(Instance const &I) const
-{
-    Solution new_sol;
-    for (auto const &encoding_route : dna)
-    {
-        assert(encoding_route.size() == I.n);
-        std::vector<int> route_requests;
-        for (size_t i = 0; i < encoding_route.size(); ++i)
-        {
-            if (encoding_route[i])
-                route_requests.push_back(i);
-        }
+//     return true;
+// }
 
-        auto route = build_route_greedy(I, route_requests);
-        new_sol.routes.push_back(route);
-    }
+// Solution GA::Encoding::to_sol(Instance const &I) const
+// {
+//     Solution new_sol;
+//     for (auto const &encoding_route : dna)
+//     {
+//         assert(encoding_route.size() == I.n);
+//         std::vector<int> route_requests;
+//         for (size_t i = 0; i < encoding_route.size(); ++i)
+//         {
+//             if (encoding_route[i])
+//                 route_requests.push_back(i);
+//         }
 
-    new_sol.compute_cached_values_from_routes(I);
-    assert(new_sol.is_solution_feasible(I));
-    return new_sol;
-}
+//         auto route = create_track_route(I, 8, route_requests);
+//         new_sol.routes.push_back(route);
+//     }
 
-GA::Encoding::Encoding(dna_t &&other_dna) : dna(std::move(other_dna)) {}
+//     new_sol.compute_cached_values_from_routes(I);
+//     // assert(new_sol.is_solution_feasible(I));
+//     return new_sol;
+// }
 
-GA::Encoding GA::Encoding::operator+(Encoding const &other) const
-{
-    static thread_local std::mt19937 rng(std::random_device{}());
-    // std::random_device rd;
-    // std::mt19937 rng(rd());
-    std::uniform_int_distribution<int> dist(0, 1);
+// int GA::Encoding::total_num_of_requests()
+// {
+//     size_t rows = dna.size();
+//     size_t cols = dna[0].size();
 
-    dna_t offspring = dna;
-    size_t rows = dna.size();
-    size_t cols = dna[0].size();
+//     int counter = 0;
+//     for (size_t col = 0; col < cols; col++)
+//     {
 
-    for (size_t col = 0; col < cols; col++)
-    {
-        size_t r = dist(rng); // flip coin
-        // std::array<size_t, 2> proposed_rows;
-        bool is_set = false;
-        int row_set = -1;
-        for (size_t row = 0; row < rows; row++)
-        {
-            // Possible improvement if we test and. If both are true then we can break early.
-            bool tmp = dna[row][col] || other.dna[row][col];
-            if (!is_set && tmp)
-            {
-                is_set = tmp;
-                row_set = row;
-                offspring[row][col] = tmp;
-            }
-            if (is_set && tmp)
-            {
-                if (r == 1)
-                {
-                    // The second offer wins. Remove the first one and
-                    // add here
-                    offspring[row_set][col] = false;
-                    row_set = row;
-                    offspring[row_set][col] = true;
-                }
-                break; // Break since there is not other true value for this request
-            }
-            // For the rest values offspring[row][col] should be false as in the first dna.
-        }
-    }
+//         for (size_t row = 0; row < rows; row++)
+//         {
+//             if (dna[row][col])
+//             {
+//                 counter++;
+//                 break;
+//             }
+//         }
+//     }
+//     return counter;
+// }
 
-    return {std::move(offspring)};
-}
+// GA::Encoding::Encoding(dna_t &&other_dna) : dna(std::move(other_dna)) {}
 
-GA::Encoding GA::Encoding::add(Instance const &I, Encoding const &other) const
-{
-    static thread_local std::mt19937 rng(std::random_device{}());
+// GA::Encoding GA::Encoding::operator+(Encoding const &other) const
+// {
+//     static thread_local std::mt19937 rng(std::random_device{}());
+//     // std::random_device rd;
+//     // std::mt19937 rng(rd());
+//     std::uniform_int_distribution<int> dist(0, 1);
 
-    size_t rows = dna.size();
-    size_t cols = dna[0].size();
+//     dna_t offspring = dna;
+//     size_t rows = dna.size();
+//     size_t cols = dna[0].size();
 
-    // Step 1: Categorize requests
-    std::vector<int> both_parents;    // Delivered by both parents
-    std::vector<int> one_parent_only; // Delivered by exactly one parent
+//     for (size_t col = 0; col < cols; col++)
+//     {
+//         size_t r = dist(rng); // flip coin
+//         // std::array<size_t, 2> proposed_rows;
+//         bool is_set = false;
+//         int row_set = -1;
+//         for (size_t row = 0; row < rows; row++)
+//         {
+//             // Possible improvement if we test and. If both are true then we can break early.
+//             bool tmp = dna[row][col] || other.dna[row][col];
+//             if (!is_set && tmp)
+//             {
+//                 is_set = tmp;
+//                 row_set = row;
+//                 offspring[row][col] = tmp;
+//             }
+//             if (is_set && tmp)
+//             {
+//                 if (r == 1)
+//                 {
+//                     // The second offer wins. Remove the first one and
+//                     // add here
+//                     offspring[row_set][col] = false;
+//                     row_set = row;
+//                     offspring[row_set][col] = true;
+//                 }
+//                 break; // Break since there is not other true value for this request
+//             }
+//             // For the rest values offspring[row][col] should be false as in the first dna.
+//         }
+//     }
 
-    for (size_t col = 0; col < cols; col++)
-    {
-        bool in_this = false;
-        bool in_other = false;
-        int row_this = -1, row_other = -1;
+//     return {std::move(offspring)};
+// }
 
-        // Check if request is delivered in this parent
-        for (size_t row = 0; row < rows; row++)
-        {
-            if (dna[row][col])
-            {
-                in_this = true;
-                row_this = row;
-                break;
-            }
-        }
+// GA::Encoding GA::Encoding::add(Instance const &I, Encoding const &other) const
+// {
+//     static thread_local std::mt19937 rng(std::random_device{}());
 
-        // Check if request is delivered in other parent
-        for (size_t row = 0; row < rows; row++)
-        {
-            if (other.dna[row][col])
-            {
-                in_other = true;
-                row_other = row;
-                break;
-            }
-        }
+//     size_t rows = dna.size();
+//     size_t cols = dna[0].size();
 
-        if (in_this && in_other)
-        {
-            both_parents.push_back(col);
-        }
-        else if (in_this || in_other)
-        {
-            one_parent_only.push_back(col);
-        }
-    }
+//     // Step 1: Categorize requests
+//     std::vector<int> both_parents;    // Delivered by both parents
+//     std::vector<int> one_parent_only; // Delivered by exactly one parent
 
-    // Step 2: Determine how many from one_parent_only to include
-    // Assuming you have access to gamma (see note below)
-    int gamma = I.gamma /* I.gamma - you need to pass this */;
-    int needed = gamma - (int)both_parents.size();
-    needed = std::max(0, std::min(needed, (int)one_parent_only.size()));
+//     for (size_t col = 0; col < cols; col++)
+//     {
+//         bool in_this = false;
+//         bool in_other = false;
+//         int row_this = -1, row_other = -1;
 
-    // Step 3: Randomly select 'needed' requests from one_parent_only
-    std::shuffle(one_parent_only.begin(), one_parent_only.end(), rng);
+//         // Check if request is delivered in this parent
+//         for (size_t row = 0; row < rows; row++)
+//         {
+//             if (dna[row][col])
+//             {
+//                 in_this = true;
+//                 row_this = row;
+//                 break;
+//             }
+//         }
 
-    // Step 4: Build offspring - initialize with all false
-    dna_t offspring(rows, std::vector<bool>(cols, false));
+//         // Check if request is delivered in other parent
+//         for (size_t row = 0; row < rows; row++)
+//         {
+//             if (other.dna[row][col])
+//             {
+//                 in_other = true;
+//                 row_other = row;
+//                 break;
+//             }
+//         }
 
-    // Add requests from both parents (inherit vehicle assignment randomly)
-    for (int col : both_parents)
-    {
-        int row_this = -1, row_other = -1;
+//         if (in_this && in_other)
+//         {
+//             both_parents.push_back(col);
+//         }
+//         else if (in_this || in_other)
+//         {
+//             one_parent_only.push_back(col);
+//         }
+//     }
 
-        for (size_t row = 0; row < rows; row++)
-        {
-            if (dna[row][col])
-                row_this = row;
-            if (other.dna[row][col])
-                row_other = row;
-        }
+//     int needed = I.gamma - (int)both_parents.size();
+//     std::shuffle(one_parent_only.begin(), one_parent_only.end(), rng);
+//     std::shuffle(both_parents.begin(), both_parents.end(), rng);
 
-        // Randomly choose which parent's vehicle assignment to use
-        std::uniform_int_distribution<int> coin(0, 1);
-        int chosen_row = (coin(rng) == 0) ? row_this : row_other;
-        offspring[chosen_row][col] = true;
-    }
+//     if (needed < 0)
+//     {
 
-    // Add randomly selected requests from one_parent_only
-    for (int i = 0; i < needed; i++)
-    {
-        int col = one_parent_only[i];
+//         both_parents = std::vector<int>(both_parents.begin(), both_parents.begin() + both_parents.size() + needed);
+//     }
 
-        // Find which parent has this request and which vehicle
-        for (size_t row = 0; row < rows; row++)
-        {
-            if (dna[row][col] || other.dna[row][col])
-            {
-                offspring[row][col] = true;
-                break;
-            }
-        }
-    }
+//     dna_t offspring(rows, std::vector<bool>(cols, false));
 
-    return {std::move(offspring)};
-}
+//     // Add requests from both parents (inherit vehicle assignment randomly)
+//     for (int col : both_parents)
+//     {
+//         int row_this = -1, row_other = -1;
 
-std::vector<GA::Encoding> GA::generate_initial_population(Instance const &I, int k1)
+//         for (size_t row = 0; row < rows; row++)
+//         {
+//             if (dna[row][col])
+//                 row_this = row;
+//             if (other.dna[row][col])
+//                 row_other = row;
+//         }
+
+//         // Randomly choose which parent's vehicle assignment to use
+//         std::uniform_int_distribution<int> coin(0, 1);
+//         int chosen_row = (coin(rng) == 0) ? row_this : row_other;
+//         offspring[chosen_row][col] = true;
+//     }
+
+//     // Add randomly selected requests from one_parent_only
+//     for (int i = 0; i < needed; i++)
+//     {
+//         int col = one_parent_only[i];
+
+//         // Find which parent has this request and which vehicle
+//         for (size_t row = 0; row < rows; row++)
+//         {
+//             if (dna[row][col] || other.dna[row][col])
+//             {
+//                 offspring[row][col] = true;
+//                 break;
+//             }
+//         }
+//     }
+
+//     return {std::move(offspring)};
+// }
+
+std::vector<Encoding> GA::generate_initial_population(Instance const &I, int k1)
 {
     std::vector<Encoding> tortn;
     tortn.reserve(k1);
 
-    for (size_t i = 0; i < k1; i++)
+    if(k1<3){
+        std::cout<<" I need a population of more than 3 to operate. \n";
+        std::abort();
+    }
+
+    size_t size_of_dc = (size_t)k1/3;
+    size_t counter = 0;
+
+
+    for (; counter < size_of_dc; counter++)
     {
-        Solution tmp = RC::construction(I, 0.9);
+        // Solution tmp = BS::beam_search(I, 0.9, 5);
+        
+        Solution tmp = DC::construction(I);
+        Encoding encoding(I, tmp);
+        tortn.push_back(std::move(encoding));
+    }
+    for (; counter < k1; counter++)
+    {
+        Solution tmp = BS::beam_search(I, 0.9, 5);
         Encoding encoding(I, tmp);
         tortn.push_back(std::move(encoding));
     }
     return tortn;
 }
 
-std::vector<GA::Encoding> GA::reproduce(Instance const &I, std::vector<Encoding> parents)
+std::vector<Encoding> GA::reproduce(Instance const &I, std::vector<Encoding> parents)
 {
     std::vector<Encoding> tortn;
     tortn.reserve((parents.size() * (parents.size() - 1)) / 2);
@@ -271,8 +312,14 @@ std::vector<GA::Encoding> GA::reproduce(Instance const &I, std::vector<Encoding>
     {
         for (size_t j = i + 1; j < parents.size(); j++)
         {
-            // Encoding new_encoding =
-            tortn.emplace_back(parents[i].add(I,parents[j]));
+
+            Encoding new_encoding = parents[i].add(I, parents[j]);
+            // assert(new_encoding.total_num_of_requests()==I.gamma);
+            if (new_encoding.total_num_of_requests() != I.gamma)
+            {
+                std::cout << new_encoding.total_num_of_requests() << I.gamma << std::endl;
+            }
+            tortn.emplace_back(new_encoding);
             // tortn.emplace_back(parents[i] + parents[j]);
         }
     }
@@ -304,14 +351,11 @@ std::vector<int> GA::select_indices_next_generation(Instance const &I, std::vect
     for (size_t i = 0; i < population.size(); i++)
     {
         Solution tmp = population[i].to_sol(I);
-        objectives[i] = -utils::objective(I, tmp); // We use minus so we can argsort later from min to max
+        objectives[i] = utils::objective(I, tmp);
     }
     auto indices = numerical::argsort(objectives);
     std::vector<int> tortn(k1);
     assert(indices.size() >= k1);
-
-    // tortn.f
-    // (indices.begin(), indices.begin()+k1);
     for (size_t i = 0; i < k1; i++)
     {
         tortn[i] = indices[i];
@@ -320,12 +364,33 @@ std::vector<int> GA::select_indices_next_generation(Instance const &I, std::vect
     return tortn;
 }
 
+GA::BestSolution GA::get_best_solution(Instance const &I, std::vector<Encoding> encodings)
+{
+    Solution sol;
+    double objective = std::numeric_limits<double>::infinity();
+    BestSolution best_sol;
+
+    for (size_t i = 0; i < encodings.size(); i++)
+    {
+        Solution tmp = encodings[i].to_sol(I);
+        double obj = utils::objective(I, tmp);
+        if (obj < objective)
+        {
+            sol = tmp;
+            objective = obj;
+        }
+    }
+    best_sol.objective = objective;
+    best_sol.sol = sol;
+    return best_sol;
+}
+
 Solution GA::genetic_algorithm(Instance const &I, int k1, int k2, int iters)
 {
     auto population = generate_initial_population(I, k1);
+    BestSolution best_sol = get_best_solution(I, population);
     for (size_t iter = 0; iter < iters; iter++)
     {
-
         assert(population.size() == k1);
         auto offsprings = reproduce(I, population);
         assert(offsprings.size() >= k1);
@@ -336,12 +401,19 @@ Solution GA::genetic_algorithm(Instance const &I, int k1, int k2, int iters)
         {
             new_population[i] = offsprings[indices_of_survivors[i]];
         }
+        BestSolution new_best_sol = get_best_solution(I, new_population);
+
+        if (new_best_sol.objective < best_sol.objective)
+        {
+            best_sol = new_best_sol;
+        }
+
         std::swap(population, new_population); // Delete the older data
     }
 
-    auto argsort_indices = select_indices_next_generation(I, population, 1);
-    Solution tortn = population[argsort_indices[0]].to_sol(I); // Use the best index!
-    tortn.compute_cached_values_from_routes(I);
-    assert(tortn.is_solution_feasible(I));
-    return tortn;
+    // auto argsort_indices = select_indices_next_generation(I, population, 1);
+    // Solution tortn = population[argsort_indices[0]].to_sol(I); // Use the best index!
+    // tortn.compute_cached_values_from_routes(I);
+    assert(best_sol.sol.is_solution_feasible(I));
+    return best_sol.sol;
 }

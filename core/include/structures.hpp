@@ -35,7 +35,7 @@ public:
     std::vector<int> load_change;     // how much does the load change if a vehicle passes throught that node
     std::vector<gt::Coords> coords;
 
-    Instance(std::string const &path, std::string const & fairness = "jain");
+    Instance(std::string const &path, std::string const &fairness = "jain");
     void printme() const;
 
 private:
@@ -53,8 +53,32 @@ struct Solution
 
     Solution() = default;
     void write_solution(const std::string &path, const std::string &instance_name) const;
-    bool is_solution_feasible(Instance const& I);
-    void compute_cached_values_from_routes(Instance const& I);
+    bool is_solution_feasible(Instance const &I);
+    void compute_cached_values_from_routes(Instance const &I);
+};
+
+class Encoding
+{
+    using dna_t = std::vector<std::vector<bool>>;
+    // Check if you can use a single vector with offset
+    dna_t dna;
+
+public:
+    Encoding() = default;
+    Encoding(dna_t &&dna);
+    Encoding(Instance const &I, Solution const &sol);
+    bool is_encoding_correct(Instance const &I) const;
+    Encoding operator+(Encoding const &other) const;
+    Encoding add(Instance const &I, Encoding const &other) const;
+    
+    /**
+     * Uses beam search for each route seperately to create a route.
+     * See create_track_route in beam search. We fixed beam width to 6.
+     * Possibly we could make this variable.
+     */
+    Solution to_sol(Instance const& I) const ;
+    int total_num_of_requests();
+    void set_vehicle_for_request(int vehicle, int request);
 };
 
 namespace utils
@@ -62,12 +86,8 @@ namespace utils
 
     std::vector<int> calc_route_cargo(
         const Instance &inst, const std::vector<int> &route);
-
-    // int route_distance(
-    //     const Instance &inst, const std::vector<int> &route);
-
-    double calc_route_distance(Instance const& I, Solution const & sol, int route_idx);
-    double calc_route_distance(Instance const& I, std::vector<int> const& route);
+    double calc_route_distance(Instance const &I, Solution const &sol, int route_idx);
+    double calc_route_distance(Instance const &I, std::vector<int> const &route);
 
     std::vector<double> all_route_distances(
         const Instance &inst, const Solution &sol);
@@ -100,7 +120,7 @@ namespace numerical
     template <typename T>
     T select_uniformly(const std::vector<T> &org, std::mt19937 &rng);
 
-    double calc_distance_between_nodes(gt::Coords const&p1, gt::Coords const& p2);
+    double calc_distance_between_nodes(gt::Coords const &p1, gt::Coords const &p2);
 
 };
 

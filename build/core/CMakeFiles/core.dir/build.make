@@ -114,10 +114,24 @@ core/CMakeFiles/core.dir/src/construction.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/core.dir/src/construction.cpp.s"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chris/Desktop/heuristics/core/src/construction.cpp -o CMakeFiles/core.dir/src/construction.cpp.s
 
+core/CMakeFiles/core.dir/src/encoding.cpp.o: core/CMakeFiles/core.dir/flags.make
+core/CMakeFiles/core.dir/src/encoding.cpp.o: /home/chris/Desktop/heuristics/core/src/encoding.cpp
+core/CMakeFiles/core.dir/src/encoding.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object core/CMakeFiles/core.dir/src/encoding.cpp.o"
+	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/encoding.cpp.o -MF CMakeFiles/core.dir/src/encoding.cpp.o.d -o CMakeFiles/core.dir/src/encoding.cpp.o -c /home/chris/Desktop/heuristics/core/src/encoding.cpp
+
+core/CMakeFiles/core.dir/src/encoding.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/core.dir/src/encoding.cpp.i"
+	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chris/Desktop/heuristics/core/src/encoding.cpp > CMakeFiles/core.dir/src/encoding.cpp.i
+
+core/CMakeFiles/core.dir/src/encoding.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/core.dir/src/encoding.cpp.s"
+	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chris/Desktop/heuristics/core/src/encoding.cpp -o CMakeFiles/core.dir/src/encoding.cpp.s
+
 core/CMakeFiles/core.dir/src/genetic.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/genetic.cpp.o: /home/chris/Desktop/heuristics/core/src/genetic.cpp
 core/CMakeFiles/core.dir/src/genetic.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object core/CMakeFiles/core.dir/src/genetic.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object core/CMakeFiles/core.dir/src/genetic.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/genetic.cpp.o -MF CMakeFiles/core.dir/src/genetic.cpp.o.d -o CMakeFiles/core.dir/src/genetic.cpp.o -c /home/chris/Desktop/heuristics/core/src/genetic.cpp
 
 core/CMakeFiles/core.dir/src/genetic.cpp.i: cmake_force
@@ -131,7 +145,7 @@ core/CMakeFiles/core.dir/src/genetic.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/grasp.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/grasp.cpp.o: /home/chris/Desktop/heuristics/core/src/grasp.cpp
 core/CMakeFiles/core.dir/src/grasp.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object core/CMakeFiles/core.dir/src/grasp.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object core/CMakeFiles/core.dir/src/grasp.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/grasp.cpp.o -MF CMakeFiles/core.dir/src/grasp.cpp.o.d -o CMakeFiles/core.dir/src/grasp.cpp.o -c /home/chris/Desktop/heuristics/core/src/grasp.cpp
 
 core/CMakeFiles/core.dir/src/grasp.cpp.i: cmake_force
@@ -145,7 +159,7 @@ core/CMakeFiles/core.dir/src/grasp.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/instance.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/instance.cpp.o: /home/chris/Desktop/heuristics/core/src/instance.cpp
 core/CMakeFiles/core.dir/src/instance.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object core/CMakeFiles/core.dir/src/instance.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object core/CMakeFiles/core.dir/src/instance.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/instance.cpp.o -MF CMakeFiles/core.dir/src/instance.cpp.o.d -o CMakeFiles/core.dir/src/instance.cpp.o -c /home/chris/Desktop/heuristics/core/src/instance.cpp
 
 core/CMakeFiles/core.dir/src/instance.cpp.i: cmake_force
@@ -159,7 +173,7 @@ core/CMakeFiles/core.dir/src/instance.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/large_neighborhood.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/large_neighborhood.cpp.o: /home/chris/Desktop/heuristics/core/src/large_neighborhood.cpp
 core/CMakeFiles/core.dir/src/large_neighborhood.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object core/CMakeFiles/core.dir/src/large_neighborhood.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object core/CMakeFiles/core.dir/src/large_neighborhood.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/large_neighborhood.cpp.o -MF CMakeFiles/core.dir/src/large_neighborhood.cpp.o.d -o CMakeFiles/core.dir/src/large_neighborhood.cpp.o -c /home/chris/Desktop/heuristics/core/src/large_neighborhood.cpp
 
 core/CMakeFiles/core.dir/src/large_neighborhood.cpp.i: cmake_force
@@ -173,7 +187,7 @@ core/CMakeFiles/core.dir/src/large_neighborhood.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/local_search.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/local_search.cpp.o: /home/chris/Desktop/heuristics/core/src/local_search.cpp
 core/CMakeFiles/core.dir/src/local_search.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object core/CMakeFiles/core.dir/src/local_search.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object core/CMakeFiles/core.dir/src/local_search.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/local_search.cpp.o -MF CMakeFiles/core.dir/src/local_search.cpp.o.d -o CMakeFiles/core.dir/src/local_search.cpp.o -c /home/chris/Desktop/heuristics/core/src/local_search.cpp
 
 core/CMakeFiles/core.dir/src/local_search.cpp.i: cmake_force
@@ -187,7 +201,7 @@ core/CMakeFiles/core.dir/src/local_search.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/neighborhoods.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/neighborhoods.cpp.o: /home/chris/Desktop/heuristics/core/src/neighborhoods.cpp
 core/CMakeFiles/core.dir/src/neighborhoods.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object core/CMakeFiles/core.dir/src/neighborhoods.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object core/CMakeFiles/core.dir/src/neighborhoods.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/neighborhoods.cpp.o -MF CMakeFiles/core.dir/src/neighborhoods.cpp.o.d -o CMakeFiles/core.dir/src/neighborhoods.cpp.o -c /home/chris/Desktop/heuristics/core/src/neighborhoods.cpp
 
 core/CMakeFiles/core.dir/src/neighborhoods.cpp.i: cmake_force
@@ -201,7 +215,7 @@ core/CMakeFiles/core.dir/src/neighborhoods.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/random.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/random.cpp.o: /home/chris/Desktop/heuristics/core/src/random.cpp
 core/CMakeFiles/core.dir/src/random.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object core/CMakeFiles/core.dir/src/random.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object core/CMakeFiles/core.dir/src/random.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/random.cpp.o -MF CMakeFiles/core.dir/src/random.cpp.o.d -o CMakeFiles/core.dir/src/random.cpp.o -c /home/chris/Desktop/heuristics/core/src/random.cpp
 
 core/CMakeFiles/core.dir/src/random.cpp.i: cmake_force
@@ -215,7 +229,7 @@ core/CMakeFiles/core.dir/src/random.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/sa.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/sa.cpp.o: /home/chris/Desktop/heuristics/core/src/sa.cpp
 core/CMakeFiles/core.dir/src/sa.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object core/CMakeFiles/core.dir/src/sa.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object core/CMakeFiles/core.dir/src/sa.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/sa.cpp.o -MF CMakeFiles/core.dir/src/sa.cpp.o.d -o CMakeFiles/core.dir/src/sa.cpp.o -c /home/chris/Desktop/heuristics/core/src/sa.cpp
 
 core/CMakeFiles/core.dir/src/sa.cpp.i: cmake_force
@@ -229,7 +243,7 @@ core/CMakeFiles/core.dir/src/sa.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/solution.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/solution.cpp.o: /home/chris/Desktop/heuristics/core/src/solution.cpp
 core/CMakeFiles/core.dir/src/solution.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object core/CMakeFiles/core.dir/src/solution.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object core/CMakeFiles/core.dir/src/solution.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/solution.cpp.o -MF CMakeFiles/core.dir/src/solution.cpp.o.d -o CMakeFiles/core.dir/src/solution.cpp.o -c /home/chris/Desktop/heuristics/core/src/solution.cpp
 
 core/CMakeFiles/core.dir/src/solution.cpp.i: cmake_force
@@ -243,7 +257,7 @@ core/CMakeFiles/core.dir/src/solution.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/utils.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/utils.cpp.o: /home/chris/Desktop/heuristics/core/src/utils.cpp
 core/CMakeFiles/core.dir/src/utils.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object core/CMakeFiles/core.dir/src/utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object core/CMakeFiles/core.dir/src/utils.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/utils.cpp.o -MF CMakeFiles/core.dir/src/utils.cpp.o.d -o CMakeFiles/core.dir/src/utils.cpp.o -c /home/chris/Desktop/heuristics/core/src/utils.cpp
 
 core/CMakeFiles/core.dir/src/utils.cpp.i: cmake_force
@@ -257,7 +271,7 @@ core/CMakeFiles/core.dir/src/utils.cpp.s: cmake_force
 core/CMakeFiles/core.dir/src/vnd.cpp.o: core/CMakeFiles/core.dir/flags.make
 core/CMakeFiles/core.dir/src/vnd.cpp.o: /home/chris/Desktop/heuristics/core/src/vnd.cpp
 core/CMakeFiles/core.dir/src/vnd.cpp.o: core/CMakeFiles/core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object core/CMakeFiles/core.dir/src/vnd.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object core/CMakeFiles/core.dir/src/vnd.cpp.o"
 	cd /home/chris/Desktop/heuristics/build/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT core/CMakeFiles/core.dir/src/vnd.cpp.o -MF CMakeFiles/core.dir/src/vnd.cpp.o.d -o CMakeFiles/core.dir/src/vnd.cpp.o -c /home/chris/Desktop/heuristics/core/src/vnd.cpp
 
 core/CMakeFiles/core.dir/src/vnd.cpp.i: cmake_force
@@ -273,6 +287,7 @@ core_OBJECTS = \
 "CMakeFiles/core.dir/src/beam_search.cpp.o" \
 "CMakeFiles/core.dir/src/clustering.cpp.o" \
 "CMakeFiles/core.dir/src/construction.cpp.o" \
+"CMakeFiles/core.dir/src/encoding.cpp.o" \
 "CMakeFiles/core.dir/src/genetic.cpp.o" \
 "CMakeFiles/core.dir/src/grasp.cpp.o" \
 "CMakeFiles/core.dir/src/instance.cpp.o" \
@@ -291,6 +306,7 @@ core_EXTERNAL_OBJECTS =
 core/libcore.a: core/CMakeFiles/core.dir/src/beam_search.cpp.o
 core/libcore.a: core/CMakeFiles/core.dir/src/clustering.cpp.o
 core/libcore.a: core/CMakeFiles/core.dir/src/construction.cpp.o
+core/libcore.a: core/CMakeFiles/core.dir/src/encoding.cpp.o
 core/libcore.a: core/CMakeFiles/core.dir/src/genetic.cpp.o
 core/libcore.a: core/CMakeFiles/core.dir/src/grasp.cpp.o
 core/libcore.a: core/CMakeFiles/core.dir/src/instance.cpp.o
@@ -304,7 +320,7 @@ core/libcore.a: core/CMakeFiles/core.dir/src/utils.cpp.o
 core/libcore.a: core/CMakeFiles/core.dir/src/vnd.cpp.o
 core/libcore.a: core/CMakeFiles/core.dir/build.make
 core/libcore.a: core/CMakeFiles/core.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX static library libcore.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX static library libcore.a"
 	cd /home/chris/Desktop/heuristics/build/core && $(CMAKE_COMMAND) -P CMakeFiles/core.dir/cmake_clean_target.cmake
 	cd /home/chris/Desktop/heuristics/build/core && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/core.dir/link.txt --verbose=$(VERBOSE)
 
