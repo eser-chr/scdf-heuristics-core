@@ -22,9 +22,9 @@ namespace BS
 {
     struct BeamState
     {
+        int cargo;
         double score;
         std::vector<int> route;
-        int cargo;
         std::vector<int> active;
         std::vector<int> remaining;
     };
@@ -71,16 +71,6 @@ namespace GRASP // Replace with the real randomized constructor
         StoppingCriterion &stopping_outer,
         StoppingCriterion &stopping_local,
         int *iteration_ptr = nullptr);
-
-    Solution meta_grasp( // Use of VND
-        const Instance &I,
-        std::function<Solution(const Instance &)> randomized_constructor,
-        const Neighborhood::NeighborhoodFactories &neighborhoods,
-        StepFunction::Func step_function,
-        StoppingCriterion &stopping_outer,
-        StoppingCriterion &stopping_local,
-        int *iteration_ptr = nullptr);
-
 };
 
 namespace SA
@@ -99,79 +89,71 @@ namespace SA
 
 namespace LN
 {
-    struct ModifyRequestInfo
+    // The idea is to encode the initial solution to requests. Then remove requests by
+    // finding the most heavy one for each route. This is done by rebuilding the route using
+    // beam search. e.g rA: 1,2,3,4,5 -> create_rotue(1,2,3,4). Try for all combo and find the heaviest request.
+
+    // Then we remove C requests.
+    // Next we need to add x requests in the encoding till we reach gamma deliveries.
+    // For each track and possible request we calculate how much larger the route would be.
+    // We take the ideal request for each track and build a first list.
+
+    // A->5
+    // B->5
+    // C->3
+
+    // Proposed additions = [(A,5), (B, 5), (C, 3), ...]
+    // If that list has more than x DIFFERENT requests we are good. We sort the list and add them progressively.
+    // Possible implementation as an unordered_set (double requests are removed automatically)
+    // then we pick random routes/request to add to the solution.
+
+    // If it has less (bcs some tracks propose the same request) then we add only as many not duplicates and then repeat the
+    // process until x requests have been fulfilled.
+
+    // Tracks x Possible requests ->Beam Searches e.g 5x2 = 10 per first iter, less in the next ones.
+    struct BestSolution
     {
-        int vehicle_id; // vehicle id as in the solution. i.e vehicle_id = k -> sol.route[k] the corresponding route.
-        int request_id; // request id as in the Instance
-        int p_idx;      // pickup index in the route of that vehicle
-        int d_idx;      // delivery index in the route of that vehicle
-        double delta;   // difference in distance
-
-        // ModifyRequestInfo(int vehicle_id, int request_id, int p_idx, int d_idx, double delta) : vehicle_id(vehicle_id), request_id(request_id), p_idx(p_idx), d_idx(d_idx), delta(delta) {}
+        double objective;
+        Solution sol;
     };
-    struct ModifyRequestInfoFull
+    struct RequestPair
     {
-        int vehicle_id;         // vehicle id as in the solution. i.e vehicle_id = k -> sol.route[k] the corresponding route.
-        int request_id;         // request id as in the Instance
-        std::vector<int> route; // The proposed route.
-        double delta;           // difference in distance
-
-        // ModifyRequestInfo(int vehicle_id, int request_id, int p_idx, int d_idx, double delta) : vehicle_id(vehicle_id), request_id(request_id), p_idx(p_idx), d_idx(d_idx), delta(delta) {}
+        int request_removed;
+        int vehicle;
+        double delta;
+        std::vector<int> rest_requests;
     };
+    RequestPair find_heaviest_request_in_route(Instance const &I, Encoding const &encoding, int vehicle, int beam_width);
+    RequestPair find_best_request_to_add(Instance const &I, Encoding const &encoding, int vehicle, int beam_width);
+    Encoding apply_removal(Instance const &I, Encoding const &encoding, std::vector<RequestPair> const &to_be_removed);
+    Encoding apply_addition(Instance const &I, Encoding const &encoding, std::vector<RequestPair> const &to_be_removed);
+    Encoding remove_requests(Instance const &I, Encoding const &encoding, int k, int beam_width);
+    Encoding append_requests(Instance const &I, Encoding const &encoding, int k, int beam_width);
+    Solution large_neighborhood(Instance const &I, Solution const &sol, int k, size_t iters, int bw_remove, int bw_append);
 
-    enum class Modification
-    {
-        Remove = 0,
-        Append = 1
-    };
-    // std::vector<int> apply_modification(Modification modification, ModifyRequestInfo const &info);
-    std::vector<int> apply_modification(Instance const &I, Solution const &sol, Modification modification, ModifyRequestInfo const &info);
-    double calc_delta_of_request(Instance const &I, Solution const &sol, Modification modification, ModifyRequestInfo const &info);
-
-    Solution large_neighborhood(Instance const &I, Solution const &sol, int k);
 };
 
 namespace GA
 {
-    struct BestSolution{
+    struct BestSolution
+    {
         double objective;
         Solution sol;
     };
-    // class Encoding
-    // {
-    //     using dna_t = std::vector<std::vector<bool>>;
-    //     // Check if you can use a single vector with offset
-    //     dna_t dna;
-
-    // public:
-    //     Encoding() = default;
-    //     Encoding(dna_t &&dna);
-    //     Encoding(Instance const &I, Solution const &sol);
-
-    //     // Decoding process. Uses greedy algo from DC construction to
-    //     // reconstruct a solution from an encoding
-    //     Solution to_sol(Instance const &I) const;
-    //     bool is_encoding_correct(Instance const &I) const;
-    //     Encoding operator+(Encoding const &other) const;
-    //     Encoding add(Instance const& I, Encoding const &other) const;
-
-    //     int total_num_of_requests();
-    //     // void _resolve_degeneracies(dna_t & child);
-    //     void set_vehicle_for_request(int vehicle, int request);
-    // };
-
+    BestSolution get_best_solution(Instance const &I, std::vector<Encoding> const& encodings);
     std::vector<Encoding> generate_initial_population(Instance const &I, int k1);
-    std::vector<Encoding> reproduce(Instance const &I, std::vector<Encoding> parents);
+    std::vector<Encoding> reproduce(Instance const &I, std::vector<Encoding> const& parents);
     // If a combination results in a request being delivered by  strictly two vehicles this function resolves that.
     // It uses a uniform distribution.
     // It is meant to be used only inside the plus operator
     std::vector<int> select_indices_next_generation(Instance const &I, std::vector<Encoding> const &population, int k1);
     void mutate(Instance const &I, std::vector<Encoding> &population, int k2);
+   
     /**
      * @param k1 Number of population to be reproduced
      * @param k2 Number of mutated requests. 0= no mutation
      * @param iters Number of iterations-generations
+     * @param beam_width Beam width of the beam search used to create the route
      */
-    Solution genetic_algorithm(Instance const &I, int k1, int k2, int iters);
-    BestSolution get_best_solution(Instance const& I, std::vector<Encoding> encodings);
+    Solution genetic_algorithm(Instance const &I, int k1, int k2, int iters, int beam_width);
 };

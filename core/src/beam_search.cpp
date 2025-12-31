@@ -2,73 +2,65 @@
 #include <algorithm>
 #include <limits>
 #include <cassert>
+#include <iostream>
 #include "solvers.hpp"
 #include "structures.hpp"
 
-// void flush_deliveries(
-//     const Instance &I,
-//     std::vector<int> &route,       // will be extended
-//     const std::vector<int> &active // remaining pickups (to deliver)
-// )
-// {
-//     std::vector<int> remaining = active;
+std::vector<int> create_simple_sequential_route(Instance const &I, std::vector<int> const &requests)
+{
 
-//     int last = route.empty() ? 0 : route.back();
+    std::vector<int> route;
+    route.reserve(2 * requests.size());
 
-//     while (!remaining.empty())
-//     {
-//         int best_r = -1;
-//         double best_d = std::numeric_limits<double>::infinity();
+    // Simple strategy: pick up all, then deliver all
+    for (int req : requests)
+        route.push_back(1 + req); // pickup
 
-//         for (int r : remaining)
-//         {
-//             int deliver_node = 1 + I.n + r;
-//             double d = I.dist[last][deliver_node];
-//             if (d < best_d)
-//             {
-//                 best_d = d;
-//                 best_r = r;
-//             }
-//         }
+    for (int req : requests)
+        route.push_back(1 + I.n + req); // delivery
 
-//         // Append best delivery
-//         int deliver_node = 1 + I.n + best_r;
-//         route.push_back(deliver_node);
-
-//         // Update last
-//         last = deliver_node;
-
-//         // Remove delivered request
-//         remaining.erase(
-//             std::remove(remaining.begin(), remaining.end(), best_r),
-//             remaining.end());
-//     }
-// }
+    return route;
+}
 
 std::vector<int> create_track_route(Instance const &I, int beam_width, std::vector<int> const &requests)
 {
-    // std::vector<int> remaining = requests;
+
+    if (requests.empty())
+    {
+        std::cerr << " In create_track_route -> requests were empty !!!" << std::endl;
+        return {};
+    }
+
     std::vector<BS::BeamState> beam_states{BS::BeamState{
-        0.0,
-        {},       // route
-        0,        // cargo
-        {},       // active
-        requests // remaining
-    }};
+        0, 0.0, {}, {}, requests}};
 
+    size_t max_steps = 4 * requests.size();
 
-    for (size_t step = 0; step < 2*requests.size(); ++step)
+    for (size_t step = 0; step < max_steps; ++step)
     {
         std::vector<BS::BeamState> new_beam;
 
-        for (const auto &st : beam_states) // Append possible paths
+        for (const auto &st : beam_states)
         {
-            // Remaining to be picked up
+            if (st.active.empty() && st.remaining.empty())
+            {
+                new_beam.push_back(st);
+                continue;
+            }
+
+            // Pickups
             for (int req : st.remaining)
             {
                 if (st.cargo + I.demands[req] <= I.C)
                 {
                     int p = 1 + req;
+
+                    if (p < 0 || p >= I.dist.size())
+                    {
+                        std::cerr << "ERROR: Invalid pickup node " << p << " for request " << req << std::endl;
+                        continue;
+                    }
+
                     std::vector<int> new_route = st.route;
                     new_route.push_back(p);
 
@@ -84,21 +76,35 @@ std::vector<int> create_track_route(Instance const &I, int beam_width, std::vect
                     }
 
                     int last = st.route.empty() ? 0 : st.route.back();
+
+                    if (last < 0 || last >= I.dist.size() || p >= I.dist[last].size())
+                    {
+                        std::cerr << "ERROR: Invalid dist access [" << last << "][" << p << "]" << std::endl;
+                        continue;
+                    }
+
                     double new_score = st.score + I.dist[last][p];
 
                     new_beam.push_back(BS::BeamState{
+                        st.cargo + I.demands[req],
                         new_score,
                         std::move(new_route),
-                        st.cargo + I.demands[req],
                         std::move(new_active),
                         std::move(new_remaining)});
                 }
             }
 
-            // Active and need to be delivered
+            // Deliveries
             for (int req : st.active)
             {
                 int d = 1 + I.n + req;
+
+                if (d < 0 || d >= I.dist.size())
+                {
+                    std::cerr << "ERROR: Invalid delivery node " << d << " for request " << req << std::endl;
+                    continue;
+                }
+
                 std::vector<int> new_route = st.route;
                 new_route.push_back(d);
                 int new_cargo = st.cargo - I.demands[req];
@@ -111,22 +117,32 @@ std::vector<int> create_track_route(Instance const &I, int beam_width, std::vect
                         new_active.push_back(r);
                 }
 
-                std::vector<int> new_remaining = st.remaining; // unchanged
+                std::vector<int> new_remaining = st.remaining;
 
                 int last = st.route.empty() ? 0 : st.route.back();
+
+                if (last < 0 || last >= I.dist.size() || d >= I.dist[last].size())
+                {
+                    std::cerr << "ERROR: Invalid dist access [" << last << "][" << d << "]" << std::endl;
+                    continue;
+                }
+
                 double new_score = st.score + I.dist[last][d];
 
                 new_beam.push_back(BS::BeamState{
+                    new_cargo,
                     new_score,
                     std::move(new_route),
-                    new_cargo,
                     std::move(new_active),
                     std::move(new_remaining)});
             }
         }
 
         if (new_beam.empty())
+        {
+            std::cerr << "WARNING: Beam became empty at step " << step << std::endl;
             break;
+        }
 
         std::sort(new_beam.begin(), new_beam.end(),
                   [](const BS::BeamState &a, const BS::BeamState &b)
@@ -138,17 +154,48 @@ std::vector<int> create_track_route(Instance const &I, int beam_width, std::vect
             new_beam.resize(beam_width);
 
         beam_states = std::move(new_beam);
+
+        bool all_complete = true;
+        for (const auto &st : beam_states)
+        {
+            if (!st.active.empty() || !st.remaining.empty())
+            {
+                all_complete = false;
+                break;
+            }
+        }
+
+        if (all_complete)
+            break;
     }
 
-    // finalise each candidate by dropping all active
     double best_score = std::numeric_limits<double>::infinity();
     std::vector<int> best_route;
 
-    for (const auto &st : beam_states)
+    for (size_t idx = 0; idx < beam_states.size(); ++idx)
     {
+        const auto &st = beam_states[idx];
+
+        if (!st.active.empty() || !st.remaining.empty())
+        {
+            std::cout << "[SELECT] Skipping incomplete state " << idx << std::endl;
+            continue;
+        }
+
         std::vector<int> final_route = st.route;
-        // flush_deliveries(I, final_route, st.active);
-        int d = utils::calc_route_distance(I, final_route);
+        for (size_t i = 0; i < final_route.size(); ++i)
+        {
+            int node = final_route[i];
+            if (node < 0 || node >= I.dist.size())
+            {
+                std::cerr << "ERROR: Invalid node " << node << " at position " << i
+                          << " in route of size " << final_route.size() << std::endl;
+                return {};
+            }
+        }
+
+        double d = utils::calc_route_distance(I, final_route);
+
         if (d < best_score)
         {
             best_score = d;
@@ -156,7 +203,14 @@ std::vector<int> create_track_route(Instance const &I, int beam_width, std::vect
         }
     }
 
-    assert(best_route.size() / 2 == requests.size());
+    if (best_route.empty())
+    {
+        std::cerr << "ERROR: No complete route found for " << requests.size() << " requests" << std::endl;
+        return create_simple_sequential_route(I, requests);
+    }
+
+    assert(best_route.size() == 2 * requests.size());
+
     return best_route;
 }
 

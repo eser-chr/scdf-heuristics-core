@@ -4,6 +4,9 @@
 #include <string>
 #include <random>
 #include <functional>
+#include <optional>
+#include <memory>
+
 namespace gt // GeneralTypes
 {
     // using precision_t = double;
@@ -59,26 +62,38 @@ struct Solution
 
 class Encoding
 {
+    mutable std::optional<Solution> cached_solution = std::nullopt;
     using dna_t = std::vector<std::vector<bool>>;
     // Check if you can use a single vector with offset
     dna_t dna;
+    // Used inside to_sol.
+    Solution _compute_solution(Instance const& I, int beam_width = 5) const ;
 
 public:
     Encoding() = default;
     Encoding(dna_t &&dna);
     Encoding(Instance const &I, Solution const &sol);
+
+
     bool is_encoding_correct(Instance const &I) const;
     Encoding operator+(Encoding const &other) const;
     Encoding add(Instance const &I, Encoding const &other) const;
     
     /**
      * Uses beam search for each route seperately to create a route.
-     * See create_track_route in beam search. We fixed beam width to 6.
-     * Possibly we could make this variable.
+     * See create_track_route in beam search. 
+     * Uses memoization and caches solution. If then encoding is passed over functions
+     * one can save time from omiting call (_compute_solution)
      */
-    Solution to_sol(Instance const& I) const ;
-    int total_num_of_requests();
+    Solution to_sol(Instance const& I, int beam_width = 5) const ;
+    int total_num_of_requests() const;
     void set_vehicle_for_request(int vehicle, int request);
+    int get_num_vehicles() const;
+    int get_num_requests() const;
+    std::vector<int> get_requests_of_route(int route) const;
+    std::vector<int> get_non_delivered_requests() const;
+    dna_t const& get_dna() const;
+    dna_t get_dna_copy() const;
 };
 
 namespace utils

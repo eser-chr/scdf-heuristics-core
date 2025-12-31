@@ -6,7 +6,6 @@
 
 std::vector<int> create_track_route(Instance const &I, int beam_width, std::vector<int> const &requests);
 
-
 Encoding::Encoding(Instance const &I, Solution const &sol)
 {
 
@@ -76,8 +75,19 @@ bool Encoding::is_encoding_correct(Instance const &I) const
 
     return true;
 }
-Solution Encoding::to_sol(Instance const &I) const
+Solution Encoding::to_sol(Instance const &I, int beam_width) const
 {
+    if(!cached_solution){
+        cached_solution = std::move(_compute_solution(I, beam_width));
+    }
+
+    return *cached_solution;
+}
+
+Solution Encoding::_compute_solution(Instance const &I, int beam_width) const{
+
+
+    assert(beam_width>0);
     Solution new_sol;
     for (auto const &encoding_route : dna)
     {
@@ -89,7 +99,7 @@ Solution Encoding::to_sol(Instance const &I) const
                 route_requests.push_back(i);
         }
 
-        auto route = create_track_route(I, 6, route_requests);
+        auto route = create_track_route(I, beam_width, route_requests);
         new_sol.routes.push_back(route);
     }
 
@@ -98,8 +108,7 @@ Solution Encoding::to_sol(Instance const &I) const
     return new_sol;
 }
 
-
-int Encoding::total_num_of_requests()
+int Encoding::total_num_of_requests() const
 {
     size_t rows = dna.size();
     size_t cols = dna[0].size();
@@ -265,4 +274,63 @@ Encoding Encoding::add(Instance const &I, Encoding const &other) const
     }
 
     return {std::move(offspring)};
+}
+
+std::vector<int> Encoding::get_requests_of_route(int route) const
+{
+    size_t rows = dna.size();
+    assert(route < rows);
+    size_t cols = dna[0].size();
+
+    std::vector<int> requests;
+    requests.reserve(cols);
+    for (size_t col = 0; col < cols; col++)
+    {
+        if (dna[route][col])
+            requests.push_back((int)col);
+    }
+
+    return requests;
+}
+
+Encoding::dna_t const &Encoding::get_dna() const
+{
+    return dna;
+}
+Encoding::dna_t Encoding::get_dna_copy() const
+{
+    return dna;
+}
+
+std::vector<int> Encoding::get_non_delivered_requests() const{
+    size_t rows = dna.size();
+    size_t cols = dna[0].size();
+
+    std::vector<int> non_delivered;
+
+    for(size_t col =0; col<cols;++col){
+        bool is_delivered = false;
+        for(size_t row = 0; row<rows; row++){
+            if(dna[row][col]){
+                is_delivered=true;
+                break;
+            }
+        }
+
+        if(is_delivered)
+            continue;
+        
+        non_delivered.push_back((int)col);
+
+
+    }
+
+    return non_delivered;
+}
+
+int Encoding::get_num_vehicles() const{
+    return dna.size();
+}
+int Encoding::get_num_requests() const{
+    return dna[0].size();
 }

@@ -1,251 +1,255 @@
 #include <cassert>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "solvers.hpp"
 #include "structures.hpp"
 
-std::vector<int> build_route_greedy(
-    const Instance &I,
-    const std::vector<int> &reqs);
+std::vector<int> create_track_route(Instance const &I, int beam_width, std::vector<int> const &requests);
 
-std::vector<int> LN::apply_modification(Instance const &I, Solution const &sol, Modification modification, ModifyRequestInfo const &info)
+LN::RequestPair LN::find_heaviest_request_in_route(Instance const &I, Encoding const &encoding, int vehicle, int beam_width)
 {
-    auto const &old_route = sol.routes[info.vehicle_id];
-    std::vector<int> to_rtn;
+    assert(vehicle >= 0 && vehicle < encoding.get_num_vehicles());
+    double best_delta = std::numeric_limits<double>::infinity();
+    int best_request = -1; // Heaviest
+    std::vector<int> rest_requests;
 
-    if (modification == Modification::Append)
+    auto requests = encoding.get_requests_of_route(vehicle);
+
+    if (requests.empty() || requests.size() == 1)
     {
-        to_rtn.reserve(old_route.size() + 2);
-        int i = 0;
-        for (; i < info.p_idx; i++)
-            to_rtn.emplace_back(old_route[i]);
-        to_rtn.emplace_back(info.request_id + 1);
-        for (; i < info.d_idx; i++)
-            to_rtn.emplace_back(old_route[i]);
-        to_rtn.emplace_back(info.request_id + I.n + 1);
-        for (; i < old_route.size(); i++)
-            to_rtn.emplace_back(old_route[i]);
-        return to_rtn;
+        // Either this track delivers 1 or zero requests. There is no
+        // point in removing that so we return an empty removal request.
+        // See below in remove requests that this requestpair is ignored.
+        // Return sentinel or throw exception
+        RequestPair tortn{-1, vehicle, 0.0, {}};
+        // tortn.delta = 0.0;
+        // tortn.vehicle = vehicle;
+        // tortn.request_removed = -1;
+        // tortn.rest_requests = {};
+        return tortn;
     }
-    else
+
+    auto route = create_track_route(I, beam_width, requests);
+    if (route.empty())
     {
-        to_rtn.reserve(old_route.size() - 2);
-        for (size_t i = 0; i < old_route.size(); i++)
+        std::cerr << "ERROR: create_track_route returned empty route for " << requests.size() << " requests" << std::endl;
+        std::abort();
+    }
+
+    double original_distance = utils::calc_route_distance(I, route);
+    for (auto const &request : requests)
+    {
+        std::vector<int> new_requests;
+        new_requests.reserve(requests.size() - 1);
+
+        for (auto sec_request : requests)
         {
-            if (i == info.p_idx || i == info.d_idx)
+            if (sec_request == request)
                 continue;
-            to_rtn.emplace_back(old_route[i]);
+            new_requests.push_back(sec_request);
         }
-        return to_rtn;
-    }
-}
 
-// Can be accelerated possibly if required.
-double LN::calc_delta_of_request(Instance const &I, Solution const &sol, Modification modification, ModifyRequestInfo const &info)
-{
-    auto new_route = apply_modification(I, sol, modification, info);
-    double old_distance = utils::calc_route_distance(I, sol, info.vehicle_id);
-    double new_distance = utils::calc_route_distance(I, new_route);
-    return new_distance - old_distance;
-}
-
-std::vector<int> find_requests_in_route(std::vector<int> const &route, int N)
-{
-    std::vector<int> requests;
-    requests.reserve(route.size() / 2);
-
-    for (int node : route)
-    {
-        assert(node != 0);
-        if (node < N + 1)
+        auto new_route = create_track_route(I, beam_width, new_requests);
+        double new_distance = utils::calc_route_distance(I, new_route);
+        double delta = new_distance - original_distance;
+        if (delta < best_delta)
         {
-            requests.emplace_back(node-1);
+            best_delta = delta;
+            best_request = request;
+            rest_requests = new_requests;
         }
     }
 
-    return requests;
-}
+    assert(best_request != -1);
 
-std::pair<int, int> find_pd_indices_of_request(std::vector<int> const &route, int N, int request)
-{
-    int pidx = -1;
-    int didx = -1;
-    for (size_t i = 0; i < route.size(); i++)
-    {
-        if (route[i] == request + 1)
-            pidx = i;
-        if (route[i] == request + N + 1)
-            didx = i;
-    }
-
-    assert(pidx != -1);
-    assert(didx != -1);
-
-    return {pidx, didx};
-}
-
-std::vector<LN::ModifyRequestInfo> build_remove_request_list(Instance const &I, Solution const &sol)
-{
-    std::vector<LN::ModifyRequestInfo> tortn;
-    for (auto i = 0; i < sol.routes.size(); ++i)
-    {
-        auto const &route = sol.routes[i];
-        auto const requests = find_requests_in_route(route, I.n);
-        for (auto request : requests)
-        {
-            auto [pidx, didx] = find_pd_indices_of_request(route, I.n, request);
-            LN::ModifyRequestInfo mri{i, request, pidx, didx};
-            double delta = LN::calc_delta_of_request(I, sol, LN::Modification::Remove, mri);
-            mri.delta = delta;
-            tortn.push_back(mri);
-        }
-    }
+    RequestPair tortn{best_request, vehicle, best_delta, std::move(rest_requests)};
+    // tortn.delta = best_delta;
+    // tortn.vehicle = vehicle;
+    // tortn.request_removed = best_request;
+    // tortn.rest_requests = rest_requests;
     return tortn;
 }
 
-std::vector<LN::ModifyRequestInfoFull> build_append_request_list(Instance const &I, Solution const &partial_sol)
+Encoding LN::apply_removal(Instance const &I, Encoding const &encoding, std::vector<LN::RequestPair> const &to_be_removed)
 {
-    std::vector<bool> requests_fulfilled(I.n, false);
-
-    for (auto const &route : partial_sol.routes)
+    auto new_dna = encoding.get_dna_copy();
+    if (to_be_removed.size() == 0)
     {
-        auto requests = find_requests_in_route(route, I.n);
-        for (auto request : requests)
-            requests_fulfilled[request] = true;
+        return {std::move(new_dna)};
     }
+    auto num_vehicles = encoding.get_num_vehicles();
+    auto num_requests = encoding.get_num_requests();
+    assert(num_vehicles == I.nK);
+    assert(num_requests == I.n);
 
-    std::vector<LN::ModifyRequestInfoFull> to_rtn;
-    for (size_t request_id = 1; request_id < I.n + 1; request_id++)
+    for (auto const &element : to_be_removed)
     {
-        if (requests_fulfilled[request_id])
-            continue;
+        auto vehicle = element.vehicle;
+        auto request = element.request_removed;
+        assert(vehicle < new_dna.size());
+        assert(request < new_dna[0].size());
 
-        // for every vehicle find the best way to put this request. Possible rebuild of path.
-        for (int vehicle_id = 0; vehicle_id < I.nK; vehicle_id++)
-        {
-            auto requests = find_requests_in_route(partial_sol.routes[vehicle_id], I.n);
-            requests.push_back(request_id);
-            auto new_suggested_route = build_route_greedy(I, requests);
 
-            double old_distance = utils::calc_route_distance(I, partial_sol.routes[vehicle_id]);
-            double new_distance = utils::calc_route_distance(I, new_suggested_route);
-            LN::ModifyRequestInfoFull tmp;
-            tmp.request_id = request_id;
-            tmp.vehicle_id = vehicle_id;
-            tmp.route = std::move(new_suggested_route);
-            tmp.delta = new_distance - old_distance;
-
-            to_rtn.push_back(std::move(tmp));
-        }
+        assert(new_dna[vehicle][request]);
+        new_dna[vehicle][request] = false;
     }
-
-    return to_rtn;
+    return Encoding{std::move(new_dna)};
 }
 
-// std::vector<LN::ModifyRequestInfoFull> build_append_request_list(
-//     Instance const &I, 
-//     Solution const &partial_sol,
-//     int max_proposals_per_request)  // ✅ Limit to top 5 vehicles per request
-// {
-//     std::vector<bool> requests_fulfilled(I.n, false);
-
-//     for (auto const &route : partial_sol.routes)
-//     {
-//         auto requests = find_requests_in_route(route, I.n);
-//         for (auto request : requests)
-//             requests_fulfilled[request] = true;
-//     }
-
-//     std::vector<LN::ModifyRequestInfoFull> to_rtn;
-    
-//     for (size_t request_id = 0; request_id < I.n; request_id++)
-//     {
-//         if (requests_fulfilled[request_id])
-//             continue;
-
-//         // Calculate cost to add this request to each vehicle
-//         std::vector<std::pair<int, double>> vehicle_costs;
-//         vehicle_costs.reserve(I.nK);
-        
-//         for (int vehicle_id = 0; vehicle_id < I.nK; vehicle_id++)
-//         {
-//             auto requests = find_requests_in_route(partial_sol.routes[vehicle_id], I.n);
-//             requests.push_back(request_id);
-//             auto new_route = build_route_greedy(I, requests);
-
-//             double old_distance = utils::calc_route_distance(I, partial_sol.routes[vehicle_id]);
-//             double new_distance = utils::calc_route_distance(I, new_route);
-            
-//             vehicle_costs.push_back({vehicle_id, new_distance - old_distance});
-//         }
-        
-//         // ✅ Only keep top N best vehicles for this request
-//         std::partial_sort(vehicle_costs.begin(), 
-//                          vehicle_costs.begin() + std::min(max_proposals_per_request, static_cast<int>(vehicle_costs.size())),
-//                          vehicle_costs.end(),
-//                          [](auto const &a, auto const &b) { return a.second < b.second; });
-        
-//         int limit = std::min(max_proposals_per_request, static_cast<int>(vehicle_costs.size()));
-//         for (int i = 0; i < limit; i++)
-//         {
-//             int vehicle_id = vehicle_costs[i].first;
-            
-//             auto requests = find_requests_in_route(partial_sol.routes[vehicle_id], I.n);
-//             requests.push_back(request_id);
-//             auto new_route = build_route_greedy(I, requests);
-            
-//             LN::ModifyRequestInfoFull tmp;
-//             tmp.request_id = request_id;
-//             tmp.vehicle_id = vehicle_id;
-//             tmp.route = std::move(new_route);
-//             tmp.delta = vehicle_costs[i].second;
-            
-//             to_rtn.push_back(std::move(tmp));
-//         }
-//     }
-
-//     return to_rtn;
-// }
-
-
-Solution LN::large_neighborhood(Instance const &I, Solution const &sol, int k)
+Encoding LN::apply_addition(Instance const &I, Encoding const &encoding, std::vector<LN::RequestPair> const &to_be_removed)
 {
-    Solution partial_sol = sol;
-    { // I put this in the block so memory can be freed from deleting the remove nodes_list
-        // Adjust so it picks from different routes.
+    auto new_dna = encoding.get_dna_copy();
 
-        auto remove_request_list = build_remove_request_list(I, sol);
-        assert(remove_request_list.size() >= k);
-        std::partial_sort(remove_request_list.begin(), remove_request_list.begin() + k, remove_request_list.end(), [](ModifyRequestInfo const &a, ModifyRequestInfo const &b)
-                          { return a.delta > b.delta; });
-
-        for (auto i = 0; i < k; i++)
-        {
-            auto new_route = apply_modification(I, partial_sol, Modification::Remove, remove_request_list[i]);
-            partial_sol.routes[remove_request_list[i].vehicle_id] = new_route;
-        }
-    }
-
-    for (int i = 0; i < k; i++)
+    for (auto const &element : to_be_removed)
     {
-        auto proposals = build_append_request_list(I, partial_sol);
-        if (proposals.empty())
-        {
-            std::cerr << " Proposals are empty why" << std::endl;
-            std::abort();
-        }
-        // std::(proposals.begin(), proposals.end(), );
-        auto min_it = std::min_element(proposals.begin(), proposals.end(), [](ModifyRequestInfoFull const &a, ModifyRequestInfoFull const &b)
-                                       { return a.delta < b.delta; });
-        auto best_proposal = *min_it;
-        partial_sol.routes[best_proposal.vehicle_id] = best_proposal.route;
-
-        // apply_modification(I, partial_sol, Modification::Append, proposals[0]);
+        auto vehicle = element.vehicle;
+        auto request = element.request_removed;
+        assert(!new_dna[vehicle][request]);
+        new_dna[vehicle][request] = true;
     }
 
-    assert(partial_sol.is_solution_feasible(I));
+    return {std::move(new_dna)};
+}
 
-    // recalculate stuff
+Encoding LN::remove_requests(Instance const &I, Encoding const &encoding, int k, int beam_width)
+{
+    auto const &dna = encoding.get_dna();
+    Encoding new_encoding = encoding;
+    assert(dna.size() == I.nK);
+    int removed = 0;
+    while (removed < k)
+    {
+        std::vector<RequestPair> to_be_removed;
+        for (int vehicle = 0; vehicle < I.nK; vehicle++)
+        {
+            auto request_pair = find_heaviest_request_in_route(I, new_encoding, vehicle, beam_width);
+            if (request_pair.request_removed == -1)
+                continue;
+            to_be_removed.push_back(request_pair);
+        }
 
-    return partial_sol;
-};
+        assert(new_encoding.get_num_requests() > to_be_removed.size());
+
+        if (k - removed < to_be_removed.size())
+        {
+            // If I have more valid remove options than I need to remove.
+            int how_many_to_remove = k - removed;
+
+            std::partial_sort(to_be_removed.begin(), to_be_removed.begin() + how_many_to_remove,
+                              to_be_removed.end(), [](RequestPair const &a, RequestPair const &b)
+                              { return a.delta < b.delta; });
+
+            to_be_removed = std::vector<RequestPair>(to_be_removed.begin(), to_be_removed.begin() + how_many_to_remove);
+        }
+
+        new_encoding = apply_removal(I, new_encoding, to_be_removed);
+        removed += to_be_removed.size();
+    }
+    return new_encoding;
+}
+
+LN::RequestPair LN::find_best_request_to_add(Instance const &I, Encoding const &encoding, int vehicle, int beam_width)
+{
+
+    double best_delta = std::numeric_limits<double>::infinity();
+    int best_request = -1;           // Heaviest
+    std::vector<int> total_requests; // Later to store in the solution
+
+    auto const &dna = encoding.get_dna();
+    auto non_delivered_requests = encoding.get_non_delivered_requests();
+    auto delivered_requests = encoding.get_requests_of_route(vehicle);
+    auto route = create_track_route(I, beam_width, delivered_requests);
+    double original_distance = utils::calc_route_distance(I, route);
+
+    for (auto request : non_delivered_requests)
+    {
+        auto new_delivered_requests = delivered_requests;
+        new_delivered_requests.push_back(request);
+        auto new_route = create_track_route(I, beam_width, new_delivered_requests);
+        double new_distance = utils::calc_route_distance(I, new_route);
+
+        double delta = new_distance - original_distance;
+        // assert(delta >= 0);
+
+        if (delta < best_delta)
+        {
+            best_delta = delta;
+            best_request = request;
+            total_requests = std::move(new_delivered_requests);
+        }
+    }
+    RequestPair tortn{ best_request, vehicle, best_delta, std::move(total_requests)};
+    // tortn.delta = best_delta;
+    // tortn.vehicle = vehicle;
+    // tortn.request_removed = best_request;
+    // tortn.rest_requests = total_requests;
+
+    return tortn;
+}
+
+Encoding LN::append_requests(Instance const &I, Encoding const &encoding, int k, int beam_width)
+{
+    auto const &dna = encoding.get_dna();
+    Encoding new_encoding = encoding;
+
+    assert(dna.size() == I.nK);
+    int addition_iterations = k / I.nK;
+    int additions_in_last_iter = k % I.nK;
+    for (size_t iter = 0; iter < addition_iterations; iter++)
+    {
+
+        std::vector<RequestPair> to_be_appended;
+        for (int vehicle = 0; vehicle < I.nK; vehicle++)
+        {
+            to_be_appended.push_back(find_best_request_to_add(I, new_encoding, vehicle, beam_width));
+        }
+
+        new_encoding = apply_addition(I, new_encoding, to_be_appended);
+    }
+
+    // Final for modulo requests
+    std::vector<RequestPair> to_be_appended;
+    for (int vehicle = 0; vehicle < I.nK; vehicle++)
+    {
+        to_be_appended.push_back(find_best_request_to_add(I, new_encoding, vehicle, beam_width));
+    }
+    std::partial_sort(to_be_appended.begin(),
+                      to_be_appended.begin() + additions_in_last_iter,
+                      to_be_appended.end(),
+                      [](RequestPair const &a, RequestPair const &b)
+                      { return a.delta < b.delta; });
+
+    // Truncate to only those elements
+    auto to_be_appended_final = std::vector<RequestPair>(to_be_appended.begin(), to_be_appended.begin() + additions_in_last_iter);
+
+    new_encoding = apply_addition(I, new_encoding, to_be_appended_final);
+
+    return new_encoding;
+}
+
+Solution LN::large_neighborhood(Instance const &I, Solution const &sol, int k, size_t iters, int bw_remove, int bw_append)
+{
+    Encoding encoding(I, sol);
+    auto new_encoding = encoding;
+
+    double best_objective = utils::objective(I, sol);
+    Solution best_sol = sol;
+
+    for (size_t iter = 0; iter < iters; ++iter)
+    {
+        new_encoding = remove_requests(I, new_encoding, k, bw_remove);
+        new_encoding = append_requests(I, new_encoding, k, bw_append);
+
+        Solution tmp = new_encoding.to_sol(I);
+        double tmp_objective = utils::objective(I, tmp);
+
+        if (tmp_objective < best_objective)
+        {
+            best_objective = tmp_objective;
+            best_sol = tmp;
+        }
+    }
+    assert(best_sol.is_solution_feasible(I));
+    return best_sol;
+}
