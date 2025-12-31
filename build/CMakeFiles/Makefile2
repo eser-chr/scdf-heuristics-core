@@ -106,10 +106,20 @@ core/clean: core/CMakeFiles/core.dir/clean
 
 # Recursive "all" directory target.
 pipelines/all: pipelines/CMakeFiles/main_a.dir/all
+pipelines/all: pipelines/CMakeFiles/test_fairness.dir/all
+pipelines/all: pipelines/CMakeFiles/tuning_ga.dir/all
+pipelines/all: pipelines/CMakeFiles/tuning_ln.dir/all
+pipelines/all: pipelines/CMakeFiles/test_algorithm.dir/all
+pipelines/all: pipelines/CMakeFiles/competition.dir/all
 .PHONY : pipelines/all
 
 # Recursive "codegen" directory target.
 pipelines/codegen: pipelines/CMakeFiles/main_a.dir/codegen
+pipelines/codegen: pipelines/CMakeFiles/test_fairness.dir/codegen
+pipelines/codegen: pipelines/CMakeFiles/tuning_ga.dir/codegen
+pipelines/codegen: pipelines/CMakeFiles/tuning_ln.dir/codegen
+pipelines/codegen: pipelines/CMakeFiles/test_algorithm.dir/codegen
+pipelines/codegen: pipelines/CMakeFiles/competition.dir/codegen
 .PHONY : pipelines/codegen
 
 # Recursive "preinstall" directory target.
@@ -118,6 +128,11 @@ pipelines/preinstall:
 
 # Recursive "clean" directory target.
 pipelines/clean: pipelines/CMakeFiles/main_a.dir/clean
+pipelines/clean: pipelines/CMakeFiles/test_fairness.dir/clean
+pipelines/clean: pipelines/CMakeFiles/tuning_ga.dir/clean
+pipelines/clean: pipelines/CMakeFiles/tuning_ln.dir/clean
+pipelines/clean: pipelines/CMakeFiles/test_algorithm.dir/clean
+pipelines/clean: pipelines/CMakeFiles/competition.dir/clean
 .PHONY : pipelines/clean
 
 #=============================================================================
@@ -127,7 +142,7 @@ pipelines/clean: pipelines/CMakeFiles/main_a.dir/clean
 core/CMakeFiles/core.dir/all:
 	$(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/depend
 	$(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Built target core"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18 "Built target core"
 .PHONY : core/CMakeFiles/core.dir/all
 
 # Build rule for subdir invocation for target.
@@ -144,7 +159,7 @@ core: core/CMakeFiles/core.dir/rule
 # codegen rule for target.
 core/CMakeFiles/core.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f core/CMakeFiles/core.dir/build.make core/CMakeFiles/core.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Finished codegen for target core"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18 "Finished codegen for target core"
 .PHONY : core/CMakeFiles/core.dir/codegen
 
 # clean rule for target.
@@ -159,7 +174,7 @@ core/CMakeFiles/core.dir/clean:
 pipelines/CMakeFiles/main_a.dir/all: core/CMakeFiles/core.dir/all
 	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/main_a.dir/build.make pipelines/CMakeFiles/main_a.dir/depend
 	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/main_a.dir/build.make pipelines/CMakeFiles/main_a.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=17,18 "Built target main_a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=19,20 "Built target main_a"
 .PHONY : pipelines/CMakeFiles/main_a.dir/all
 
 # Build rule for subdir invocation for target.
@@ -176,13 +191,173 @@ main_a: pipelines/CMakeFiles/main_a.dir/rule
 # codegen rule for target.
 pipelines/CMakeFiles/main_a.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/main_a.dir/build.make pipelines/CMakeFiles/main_a.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=17,18 "Finished codegen for target main_a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=19,20 "Finished codegen for target main_a"
 .PHONY : pipelines/CMakeFiles/main_a.dir/codegen
 
 # clean rule for target.
 pipelines/CMakeFiles/main_a.dir/clean:
 	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/main_a.dir/build.make pipelines/CMakeFiles/main_a.dir/clean
 .PHONY : pipelines/CMakeFiles/main_a.dir/clean
+
+#=============================================================================
+# Target rules for target pipelines/CMakeFiles/test_fairness.dir
+
+# All Build rule for target.
+pipelines/CMakeFiles/test_fairness.dir/all: core/CMakeFiles/core.dir/all
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/depend
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=23,24 "Built target test_fairness"
+.PHONY : pipelines/CMakeFiles/test_fairness.dir/all
+
+# Build rule for subdir invocation for target.
+pipelines/CMakeFiles/test_fairness.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 18
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/test_fairness.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 0
+.PHONY : pipelines/CMakeFiles/test_fairness.dir/rule
+
+# Convenience name for target.
+test_fairness: pipelines/CMakeFiles/test_fairness.dir/rule
+.PHONY : test_fairness
+
+# codegen rule for target.
+pipelines/CMakeFiles/test_fairness.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=23,24 "Finished codegen for target test_fairness"
+.PHONY : pipelines/CMakeFiles/test_fairness.dir/codegen
+
+# clean rule for target.
+pipelines/CMakeFiles/test_fairness.dir/clean:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/clean
+.PHONY : pipelines/CMakeFiles/test_fairness.dir/clean
+
+#=============================================================================
+# Target rules for target pipelines/CMakeFiles/tuning_ga.dir
+
+# All Build rule for target.
+pipelines/CMakeFiles/tuning_ga.dir/all: core/CMakeFiles/core.dir/all
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/depend
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=25,26 "Built target tuning_ga"
+.PHONY : pipelines/CMakeFiles/tuning_ga.dir/all
+
+# Build rule for subdir invocation for target.
+pipelines/CMakeFiles/tuning_ga.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 18
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/tuning_ga.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 0
+.PHONY : pipelines/CMakeFiles/tuning_ga.dir/rule
+
+# Convenience name for target.
+tuning_ga: pipelines/CMakeFiles/tuning_ga.dir/rule
+.PHONY : tuning_ga
+
+# codegen rule for target.
+pipelines/CMakeFiles/tuning_ga.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=25,26 "Finished codegen for target tuning_ga"
+.PHONY : pipelines/CMakeFiles/tuning_ga.dir/codegen
+
+# clean rule for target.
+pipelines/CMakeFiles/tuning_ga.dir/clean:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/clean
+.PHONY : pipelines/CMakeFiles/tuning_ga.dir/clean
+
+#=============================================================================
+# Target rules for target pipelines/CMakeFiles/tuning_ln.dir
+
+# All Build rule for target.
+pipelines/CMakeFiles/tuning_ln.dir/all: core/CMakeFiles/core.dir/all
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/depend
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=27,28 "Built target tuning_ln"
+.PHONY : pipelines/CMakeFiles/tuning_ln.dir/all
+
+# Build rule for subdir invocation for target.
+pipelines/CMakeFiles/tuning_ln.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 18
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/tuning_ln.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 0
+.PHONY : pipelines/CMakeFiles/tuning_ln.dir/rule
+
+# Convenience name for target.
+tuning_ln: pipelines/CMakeFiles/tuning_ln.dir/rule
+.PHONY : tuning_ln
+
+# codegen rule for target.
+pipelines/CMakeFiles/tuning_ln.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=27,28 "Finished codegen for target tuning_ln"
+.PHONY : pipelines/CMakeFiles/tuning_ln.dir/codegen
+
+# clean rule for target.
+pipelines/CMakeFiles/tuning_ln.dir/clean:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/clean
+.PHONY : pipelines/CMakeFiles/tuning_ln.dir/clean
+
+#=============================================================================
+# Target rules for target pipelines/CMakeFiles/test_algorithm.dir
+
+# All Build rule for target.
+pipelines/CMakeFiles/test_algorithm.dir/all: core/CMakeFiles/core.dir/all
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/depend
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=21,22 "Built target test_algorithm"
+.PHONY : pipelines/CMakeFiles/test_algorithm.dir/all
+
+# Build rule for subdir invocation for target.
+pipelines/CMakeFiles/test_algorithm.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 18
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/test_algorithm.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 0
+.PHONY : pipelines/CMakeFiles/test_algorithm.dir/rule
+
+# Convenience name for target.
+test_algorithm: pipelines/CMakeFiles/test_algorithm.dir/rule
+.PHONY : test_algorithm
+
+# codegen rule for target.
+pipelines/CMakeFiles/test_algorithm.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=21,22 "Finished codegen for target test_algorithm"
+.PHONY : pipelines/CMakeFiles/test_algorithm.dir/codegen
+
+# clean rule for target.
+pipelines/CMakeFiles/test_algorithm.dir/clean:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/clean
+.PHONY : pipelines/CMakeFiles/test_algorithm.dir/clean
+
+#=============================================================================
+# Target rules for target pipelines/CMakeFiles/competition.dir
+
+# All Build rule for target.
+pipelines/CMakeFiles/competition.dir/all: core/CMakeFiles/core.dir/all
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/depend
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=1,2 "Built target competition"
+.PHONY : pipelines/CMakeFiles/competition.dir/all
+
+# Build rule for subdir invocation for target.
+pipelines/CMakeFiles/competition.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 18
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/competition.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chris/Desktop/heuristics/build/CMakeFiles 0
+.PHONY : pipelines/CMakeFiles/competition.dir/rule
+
+# Convenience name for target.
+competition: pipelines/CMakeFiles/competition.dir/rule
+.PHONY : competition
+
+# codegen rule for target.
+pipelines/CMakeFiles/competition.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/chris/Desktop/heuristics/build/CMakeFiles --progress-num=1,2 "Finished codegen for target competition"
+.PHONY : pipelines/CMakeFiles/competition.dir/codegen
+
+# clean rule for target.
+pipelines/CMakeFiles/competition.dir/clean:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/clean
+.PHONY : pipelines/CMakeFiles/competition.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

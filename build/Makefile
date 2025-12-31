@@ -142,6 +142,71 @@ main_a/fast:
 	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/main_a.dir/build.make pipelines/CMakeFiles/main_a.dir/build
 .PHONY : main_a/fast
 
+#=============================================================================
+# Target rules for targets named test_fairness
+
+# Build rule for target.
+test_fairness: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_fairness
+.PHONY : test_fairness
+
+# fast build rule for target.
+test_fairness/fast:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/build
+.PHONY : test_fairness/fast
+
+#=============================================================================
+# Target rules for targets named tuning_ga
+
+# Build rule for target.
+tuning_ga: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tuning_ga
+.PHONY : tuning_ga
+
+# fast build rule for target.
+tuning_ga/fast:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/build
+.PHONY : tuning_ga/fast
+
+#=============================================================================
+# Target rules for targets named tuning_ln
+
+# Build rule for target.
+tuning_ln: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tuning_ln
+.PHONY : tuning_ln
+
+# fast build rule for target.
+tuning_ln/fast:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/build
+.PHONY : tuning_ln/fast
+
+#=============================================================================
+# Target rules for targets named test_algorithm
+
+# Build rule for target.
+test_algorithm: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_algorithm
+.PHONY : test_algorithm
+
+# fast build rule for target.
+test_algorithm/fast:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/build
+.PHONY : test_algorithm/fast
+
+#=============================================================================
+# Target rules for targets named competition
+
+# Build rule for target.
+competition: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 competition
+.PHONY : competition
+
+# fast build rule for target.
+competition/fast:
+	$(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/build
+.PHONY : competition/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -150,8 +215,13 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... competition"
 	@echo "... core"
 	@echo "... main_a"
+	@echo "... test_algorithm"
+	@echo "... test_fairness"
+	@echo "... tuning_ga"
+	@echo "... tuning_ln"
 .PHONY : help
 
 

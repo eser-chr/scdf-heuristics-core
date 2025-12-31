@@ -1,0 +1,5 @@
+path,N,k1,k2,beam_width,duration,objective
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,5,0,5,132.801,1662.96
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,5,0,5,132.801,1662.96
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,5,0,10,255.654,1677.53
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,5,0,10,255.654,1677.53

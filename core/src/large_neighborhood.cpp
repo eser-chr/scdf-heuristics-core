@@ -228,7 +228,7 @@ Encoding LN::append_requests(Instance const &I, Encoding const &encoding, int k,
     return new_encoding;
 }
 
-Solution LN::large_neighborhood(Instance const &I, Solution const &sol, int k, size_t iters, int bw_remove, int bw_append)
+Solution LN::large_neighborhood(Instance const &I, Solution const &sol, int k, size_t iters, int bw_remove, int bw_append, std::vector<double>* objectives_over_time)
 {
     Encoding encoding(I, sol);
     auto new_encoding = encoding;
@@ -248,6 +248,10 @@ Solution LN::large_neighborhood(Instance const &I, Solution const &sol, int k, s
         {
             best_objective = tmp_objective;
             best_sol = tmp;
+        }
+
+        if(objectives_over_time){
+            (*objectives_over_time).push_back(best_objective);
         }
     }
     assert(best_sol.is_solution_feasible(I));

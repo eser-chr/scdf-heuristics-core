@@ -75,7 +75,7 @@ int main(int argc, char **argv)
         {
             std::cout << " -" << std::endl;
             Solution dr_sol;
-            Instance I(instance, "maxmin");
+            Instance I(instance, "jain");
             { // Deterministic
 
                 std::cout<<"dc";
@@ -201,44 +201,44 @@ int main(int argc, char **argv)
             //     all_res.push_back(res);
             // }
 
-            {
-                std::cout<<" LN";
-                Timer t;
-                auto ln_sol = LN::large_neighborhood(I, dr_sol, 4, 2, 5, 5); // after tuning
-                double exec_time = t.get_time();
-                if (!ln_sol.is_solution_feasible(I))
-                {
-                    std::cerr << "Solution is not feasible ERROR?";
-                }
-                double objective = utils::objective(I, ln_sol);
+            // {
+            //     std::cout<<" LN";
+            //     Timer t;
+            //     auto ln_sol = LN::large_neighborhood(I, dr_sol, 4, 2, 5, 5); // after tuning
+            //     double exec_time = t.get_time();
+            //     if (!ln_sol.is_solution_feasible(I))
+            //     {
+            //         std::cerr << "Solution is not feasible ERROR?";
+            //     }
+            //     double objective = utils::objective(I, ln_sol);
                 
-                RES res;
-                res.duration = exec_time;
-                res.method = "LN";
-                res.instance_path = instance;
-                res.objective = objective;
-                res.N = N;
-                all_res.push_back(res);
-            }
-            {
-                std::cout<<" GA";
-                Timer t;
-                auto ga_sol = GA::genetic_algorithm(I, 15 ,1, 20, 5); // after tuning
-                double exec_time = t.get_time();
-                if (!ga_sol.is_solution_feasible(I))
-                {
-                    std::cerr << "Solution is not feasible ERROR?";
-                }
-                double objective = utils::objective(I, ga_sol);
+            //     RES res;
+            //     res.duration = exec_time;
+            //     res.method = "LN";
+            //     res.instance_path = instance;
+            //     res.objective = objective;
+            //     res.N = N;
+            //     all_res.push_back(res);
+            // }
+            // {
+            //     std::cout<<" GA";
+            //     Timer t;
+            //     auto ga_sol = GA::genetic_algorithm(I, 15 ,1, 20, 5); // after tuning
+            //     double exec_time = t.get_time();
+            //     if (!ga_sol.is_solution_feasible(I))
+            //     {
+            //         std::cerr << "Solution is not feasible ERROR?";
+            //     }
+            //     double objective = utils::objective(I, ga_sol);
                 
-                RES res;
-                res.duration = exec_time;
-                res.method = "GA";
-                res.instance_path = instance;
-                res.objective = objective;
-                res.N = N;
-                all_res.push_back(res);
-            }
+            //     RES res;
+            //     res.duration = exec_time;
+            //     res.method = "GA";
+            //     res.instance_path = instance;
+            //     res.objective = objective;
+            //     res.N = N;
+            //     all_res.push_back(res);
+            // }
         }
         std::cout << "\n";
     }

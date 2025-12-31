@@ -130,6 +130,100 @@ main_a/fast:
 	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/main_a.dir/build.make pipelines/CMakeFiles/main_a.dir/build
 .PHONY : main_a/fast
 
+# Convenience name for target.
+pipelines/CMakeFiles/test_fairness.dir/rule:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/test_fairness.dir/rule
+.PHONY : pipelines/CMakeFiles/test_fairness.dir/rule
+
+# Convenience name for target.
+test_fairness: pipelines/CMakeFiles/test_fairness.dir/rule
+.PHONY : test_fairness
+
+# fast build rule for target.
+test_fairness/fast:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/build
+.PHONY : test_fairness/fast
+
+# Convenience name for target.
+pipelines/CMakeFiles/tuning_ga.dir/rule:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/tuning_ga.dir/rule
+.PHONY : pipelines/CMakeFiles/tuning_ga.dir/rule
+
+# Convenience name for target.
+tuning_ga: pipelines/CMakeFiles/tuning_ga.dir/rule
+.PHONY : tuning_ga
+
+# fast build rule for target.
+tuning_ga/fast:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/build
+.PHONY : tuning_ga/fast
+
+# Convenience name for target.
+pipelines/CMakeFiles/tuning_ln.dir/rule:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/tuning_ln.dir/rule
+.PHONY : pipelines/CMakeFiles/tuning_ln.dir/rule
+
+# Convenience name for target.
+tuning_ln: pipelines/CMakeFiles/tuning_ln.dir/rule
+.PHONY : tuning_ln
+
+# fast build rule for target.
+tuning_ln/fast:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/build
+.PHONY : tuning_ln/fast
+
+# Convenience name for target.
+pipelines/CMakeFiles/test_algorithm.dir/rule:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/test_algorithm.dir/rule
+.PHONY : pipelines/CMakeFiles/test_algorithm.dir/rule
+
+# Convenience name for target.
+test_algorithm: pipelines/CMakeFiles/test_algorithm.dir/rule
+.PHONY : test_algorithm
+
+# fast build rule for target.
+test_algorithm/fast:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/build
+.PHONY : test_algorithm/fast
+
+# Convenience name for target.
+pipelines/CMakeFiles/competition.dir/rule:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pipelines/CMakeFiles/competition.dir/rule
+.PHONY : pipelines/CMakeFiles/competition.dir/rule
+
+# Convenience name for target.
+competition: pipelines/CMakeFiles/competition.dir/rule
+.PHONY : competition
+
+# fast build rule for target.
+competition/fast:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/build
+.PHONY : competition/fast
+
+competition.o: competition.cpp.o
+.PHONY : competition.o
+
+# target to build an object file
+competition.cpp.o:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/competition.cpp.o
+.PHONY : competition.cpp.o
+
+competition.i: competition.cpp.i
+.PHONY : competition.i
+
+# target to preprocess a source file
+competition.cpp.i:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/competition.cpp.i
+.PHONY : competition.cpp.i
+
+competition.s: competition.cpp.s
+.PHONY : competition.s
+
+# target to generate assembly for a file
+competition.cpp.s:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/competition.dir/build.make pipelines/CMakeFiles/competition.dir/competition.cpp.s
+.PHONY : competition.cpp.s
+
 main_a.o: main_a.cpp.o
 .PHONY : main_a.o
 
@@ -154,6 +248,102 @@ main_a.cpp.s:
 	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/main_a.dir/build.make pipelines/CMakeFiles/main_a.dir/main_a.cpp.s
 .PHONY : main_a.cpp.s
 
+test_algorithm.o: test_algorithm.cpp.o
+.PHONY : test_algorithm.o
+
+# target to build an object file
+test_algorithm.cpp.o:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/test_algorithm.cpp.o
+.PHONY : test_algorithm.cpp.o
+
+test_algorithm.i: test_algorithm.cpp.i
+.PHONY : test_algorithm.i
+
+# target to preprocess a source file
+test_algorithm.cpp.i:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/test_algorithm.cpp.i
+.PHONY : test_algorithm.cpp.i
+
+test_algorithm.s: test_algorithm.cpp.s
+.PHONY : test_algorithm.s
+
+# target to generate assembly for a file
+test_algorithm.cpp.s:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_algorithm.dir/build.make pipelines/CMakeFiles/test_algorithm.dir/test_algorithm.cpp.s
+.PHONY : test_algorithm.cpp.s
+
+test_fairness.o: test_fairness.cpp.o
+.PHONY : test_fairness.o
+
+# target to build an object file
+test_fairness.cpp.o:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/test_fairness.cpp.o
+.PHONY : test_fairness.cpp.o
+
+test_fairness.i: test_fairness.cpp.i
+.PHONY : test_fairness.i
+
+# target to preprocess a source file
+test_fairness.cpp.i:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/test_fairness.cpp.i
+.PHONY : test_fairness.cpp.i
+
+test_fairness.s: test_fairness.cpp.s
+.PHONY : test_fairness.s
+
+# target to generate assembly for a file
+test_fairness.cpp.s:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/test_fairness.dir/build.make pipelines/CMakeFiles/test_fairness.dir/test_fairness.cpp.s
+.PHONY : test_fairness.cpp.s
+
+tuning_ga.o: tuning_ga.cpp.o
+.PHONY : tuning_ga.o
+
+# target to build an object file
+tuning_ga.cpp.o:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/tuning_ga.cpp.o
+.PHONY : tuning_ga.cpp.o
+
+tuning_ga.i: tuning_ga.cpp.i
+.PHONY : tuning_ga.i
+
+# target to preprocess a source file
+tuning_ga.cpp.i:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/tuning_ga.cpp.i
+.PHONY : tuning_ga.cpp.i
+
+tuning_ga.s: tuning_ga.cpp.s
+.PHONY : tuning_ga.s
+
+# target to generate assembly for a file
+tuning_ga.cpp.s:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ga.dir/build.make pipelines/CMakeFiles/tuning_ga.dir/tuning_ga.cpp.s
+.PHONY : tuning_ga.cpp.s
+
+tuning_ln.o: tuning_ln.cpp.o
+.PHONY : tuning_ln.o
+
+# target to build an object file
+tuning_ln.cpp.o:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/tuning_ln.cpp.o
+.PHONY : tuning_ln.cpp.o
+
+tuning_ln.i: tuning_ln.cpp.i
+.PHONY : tuning_ln.i
+
+# target to preprocess a source file
+tuning_ln.cpp.i:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/tuning_ln.cpp.i
+.PHONY : tuning_ln.cpp.i
+
+tuning_ln.s: tuning_ln.cpp.s
+.PHONY : tuning_ln.s
+
+# target to generate assembly for a file
+tuning_ln.cpp.s:
+	cd /home/chris/Desktop/heuristics/build && $(MAKE) $(MAKESILENT) -f pipelines/CMakeFiles/tuning_ln.dir/build.make pipelines/CMakeFiles/tuning_ln.dir/tuning_ln.cpp.s
+.PHONY : tuning_ln.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,10 +352,30 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... competition"
 	@echo "... main_a"
+	@echo "... test_algorithm"
+	@echo "... test_fairness"
+	@echo "... tuning_ga"
+	@echo "... tuning_ln"
+	@echo "... competition.o"
+	@echo "... competition.i"
+	@echo "... competition.s"
 	@echo "... main_a.o"
 	@echo "... main_a.i"
 	@echo "... main_a.s"
+	@echo "... test_algorithm.o"
+	@echo "... test_algorithm.i"
+	@echo "... test_algorithm.s"
+	@echo "... test_fairness.o"
+	@echo "... test_fairness.i"
+	@echo "... test_fairness.s"
+	@echo "... tuning_ga.o"
+	@echo "... tuning_ga.i"
+	@echo "... tuning_ga.s"
+	@echo "... tuning_ln.o"
+	@echo "... tuning_ln.i"
+	@echo "... tuning_ln.s"
 .PHONY : help
 
 

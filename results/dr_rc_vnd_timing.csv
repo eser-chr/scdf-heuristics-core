@@ -1,0 +1,61 @@
+path,N,method,duration,objective,min,max,mean,std
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,DC ,0.614883,1880.24,jain,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,RC,0.688702,2153.45,jain,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,BS,2.73434,1500.17,jain,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,LN,193.636,1605.37,jain,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,GA,931.122,1274.34,jain,1,41,21,28.2843
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,DC ,0.623068,2237.31,jain,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,RC,0.66679,2447.75,jain,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,BS,2.39704,1618.14,jain,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,LN,268.741,1931.9,jain,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,GA,1190.31,1421.34,jain,1,45,23,31.1127
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,DC ,0.600897,2195.95,jain,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,RC,0.6665,2296.12,jain,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,BS,2.50139,1701.25,jain,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,LN,261.961,1793.54,jain,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,GA,1324.67,1545.38,jain,1,49,25,33.9411
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,DC ,0.591159,2133.44,jain,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,RC,0.676078,2247.69,jain,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,BS,2.17709,1544.36,jain,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,LN,225.518,1755.22,jain,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,GA,1147,1296.55,jain,1,44,22.5,30.4056
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,DC ,0.623669,1880.24,maxmin,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,RC,0.672882,2198.39,maxmin,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,BS,1.96904,1500.17,maxmin,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,LN,191.299,1605.37,maxmin,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,GA,938.591,1291.68,maxmin,1,41,21,28.2843
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,DC ,0.589105,2237.31,maxmin,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,RC,0.65033,2450.96,maxmin,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,BS,2.3705,1618.14,maxmin,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,LN,266.054,1931.9,maxmin,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,GA,1211.49,1447.65,maxmin,1,45,23,31.1127
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,DC ,0.583153,2195.95,maxmin,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,RC,0.716253,2651.12,maxmin,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,BS,2.57996,1701.25,maxmin,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,LN,264.233,1793.54,maxmin,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,GA,1323.79,1463.42,maxmin,1,49,25,33.9411
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,DC ,0.621956,2133.44,maxmin,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,RC,0.674525,2378.59,maxmin,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,BS,2.26791,1544.36,maxmin,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,LN,225.356,1755.22,maxmin,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,GA,1074.08,1307.13,maxmin,1,44,22.5,30.4056
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,DC ,0.615945,1880.24,gini,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,RC,0.657213,2042.93,gini,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,BS,1.88389,1500.17,gini,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,LN,192.166,1605.37,gini,1,41,21,28.2843
+../instances/50/test/instance48_nreq50_nveh2_gamma42.txt,50,GA,896.447,1262.92,gini,1,41,21,28.2843
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,DC ,0.616596,2237.31,gini,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,RC,0.700954,2367.44,gini,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,BS,2.63927,1618.14,gini,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,LN,269.049,1931.9,gini,1,45,23,31.1127
+../instances/50/test/instance57_nreq50_nveh2_gamma46.txt,50,GA,1152.71,1481.91,gini,1,45,23,31.1127
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,DC ,0.602049,2195.95,gini,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,RC,0.739977,2113.86,gini,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,BS,2.59403,1701.25,gini,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,LN,260.137,1793.54,gini,1,49,25,33.9411
+../instances/50/test/instance31_nreq50_nveh2_gamma50.txt,50,GA,1367.23,1455.11,gini,1,49,25,33.9411
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,DC ,0.557085,2133.44,gini,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,RC,0.67732,2309.22,gini,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,BS,2.4129,1544.36,gini,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,LN,226.351,1755.22,gini,1,44,22.5,30.4056
+../instances/50/test/instance35_nreq50_nveh2_gamma45.txt,50,GA,1073.07,1316.25,gini,1,44,22.5,30.4056

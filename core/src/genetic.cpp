@@ -77,21 +77,21 @@ void GA::mutate(Instance const &I, std::vector<Encoding> &population, int k2)
         }
     }
 }
-std::vector<int> GA::select_indices_next_generation(Instance const &I, std::vector<Encoding> const &population, int k1)
+std::vector<int> GA::select_indices_next_generation(Instance const &I, std::vector<Encoding> const &population, int k1, int beam_width)
 {
     // std::vector<double> objectives(population.size());
     std::vector<double> objectives;
     objectives.reserve(population.size());
 
     for(auto const& enc: population){
-        Solution tmp = enc.to_sol(I);
+        Solution tmp = enc.to_sol(I, beam_width);
         objectives.push_back(utils::objective(I, tmp));
     }
     auto indices = numerical::argsort(objectives);
     return std::vector<int>(indices.begin(), indices.begin()+k1);
 }
 
-GA::BestSolution GA::get_best_solution(Instance const &I, std::vector<Encoding> const& encodings)
+GA::BestSolution GA::get_best_solution(Instance const &I, std::vector<Encoding> const& encodings, int beam_width)
 {
     Solution sol;
     double objective = std::numeric_limits<double>::infinity();
@@ -99,7 +99,7 @@ GA::BestSolution GA::get_best_solution(Instance const &I, std::vector<Encoding> 
 
     for (size_t i = 0; i < encodings.size(); i++)
     {
-        Solution tmp = encodings[i].to_sol(I);
+        Solution tmp = encodings[i].to_sol(I, beam_width);
         double obj = utils::objective(I, tmp);
         if (obj < objective)
         {
@@ -112,26 +112,27 @@ GA::BestSolution GA::get_best_solution(Instance const &I, std::vector<Encoding> 
     return best_sol;
 }
 
-Solution GA::genetic_algorithm(Instance const &I, int k1, int k2, int iters, int beam_width)
+Solution GA::genetic_algorithm(Instance const &I, int k1, int k2, int iters, int beam_width, std::vector<double>* objectives_over_time )
 {
     assert(beam_width > 0);
     assert(iters > 0);
     auto population = generate_initial_population(I, k1);
-    BestSolution best_sol = get_best_solution(I, population);
+    BestSolution best_sol = get_best_solution(I, population, beam_width);
+
     for (size_t iter = 0; iter < iters; iter++)
     {
         assert(population.size() == k1);
         auto offsprings = reproduce(I, population);
         assert(offsprings.size() >= k1);
         mutate(I, offsprings, k2);
-        auto indices_of_survivors = select_indices_next_generation(I, offsprings, k1);
+        auto indices_of_survivors = select_indices_next_generation(I, offsprings, k1, beam_width);
         std::vector<Encoding> new_population;
         new_population.reserve(k1);
         for (size_t i = 0; i < k1; i++)
         {
             new_population.push_back(std::move(offsprings[indices_of_survivors[i]]));
         }
-        BestSolution new_best_sol = get_best_solution(I, new_population);
+        BestSolution new_best_sol = get_best_solution(I, new_population, beam_width);
 
         if (new_best_sol.objective < best_sol.objective)
         {
@@ -139,6 +140,10 @@ Solution GA::genetic_algorithm(Instance const &I, int k1, int k2, int iters, int
         }
 
         std::swap(population, new_population); // Delete the older data
+
+        if(objectives_over_time){
+            (*objectives_over_time).push_back(best_sol.objective);
+        }
     }
     assert(best_sol.sol.is_solution_feasible(I));
     return best_sol.sol;

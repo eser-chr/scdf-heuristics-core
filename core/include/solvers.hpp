@@ -129,7 +129,7 @@ namespace LN
     Encoding apply_addition(Instance const &I, Encoding const &encoding, std::vector<RequestPair> const &to_be_removed);
     Encoding remove_requests(Instance const &I, Encoding const &encoding, int k, int beam_width);
     Encoding append_requests(Instance const &I, Encoding const &encoding, int k, int beam_width);
-    Solution large_neighborhood(Instance const &I, Solution const &sol, int k, size_t iters, int bw_remove, int bw_append);
+    Solution large_neighborhood(Instance const &I, Solution const &sol, int k, size_t iters, int bw_remove, int bw_append, std::vector<double>* objectives_over_time = nullptr);
 
 };
 
@@ -140,20 +140,22 @@ namespace GA
         double objective;
         Solution sol;
     };
-    BestSolution get_best_solution(Instance const &I, std::vector<Encoding> const& encodings);
+    BestSolution get_best_solution(Instance const &I, std::vector<Encoding> const &encodings, int beam_width);
     std::vector<Encoding> generate_initial_population(Instance const &I, int k1);
-    std::vector<Encoding> reproduce(Instance const &I, std::vector<Encoding> const& parents);
+    std::vector<Encoding> reproduce(Instance const &I, std::vector<Encoding> const &parents);
     // If a combination results in a request being delivered by  strictly two vehicles this function resolves that.
     // It uses a uniform distribution.
     // It is meant to be used only inside the plus operator
-    std::vector<int> select_indices_next_generation(Instance const &I, std::vector<Encoding> const &population, int k1);
+    std::vector<int> select_indices_next_generation(Instance const &I, std::vector<Encoding> const &population, int k1, int beam_width);
     void mutate(Instance const &I, std::vector<Encoding> &population, int k2);
-   
+
     /**
      * @param k1 Number of population to be reproduced
      * @param k2 Number of mutated requests. 0= no mutation
      * @param iters Number of iterations-generations
      * @param beam_width Beam width of the beam search used to create the route
+     * @param objectives_over_time If not nullptr then it appends the best objective till that iteration
      */
-    Solution genetic_algorithm(Instance const &I, int k1, int k2, int iters, int beam_width);
+    Solution genetic_algorithm(Instance const &I, int k1, int k2, int iters, int beam_width, std::vector<double>* objectives_over_time = nullptr);
+    //  Solution genetic_algorithm(Instance const &I, int k1, int k2, int iters, int beam_width);
 };

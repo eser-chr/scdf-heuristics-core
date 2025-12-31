@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3 -Wl,--dependency-file=CMakeFiles/tuning_ln.dir/link.d CMakeFiles/tuning_ln.dir/tuning_ln.cpp.o -o tuning_ln  ../core/libcore.a

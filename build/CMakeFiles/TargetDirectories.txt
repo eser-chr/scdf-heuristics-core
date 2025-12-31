@@ -4,5 +4,10 @@
 /home/chris/Desktop/heuristics/build/core/CMakeFiles/edit_cache.dir
 /home/chris/Desktop/heuristics/build/core/CMakeFiles/rebuild_cache.dir
 /home/chris/Desktop/heuristics/build/pipelines/CMakeFiles/main_a.dir
+/home/chris/Desktop/heuristics/build/pipelines/CMakeFiles/test_fairness.dir
+/home/chris/Desktop/heuristics/build/pipelines/CMakeFiles/tuning_ga.dir
+/home/chris/Desktop/heuristics/build/pipelines/CMakeFiles/tuning_ln.dir
+/home/chris/Desktop/heuristics/build/pipelines/CMakeFiles/test_algorithm.dir
+/home/chris/Desktop/heuristics/build/pipelines/CMakeFiles/competition.dir
 /home/chris/Desktop/heuristics/build/pipelines/CMakeFiles/edit_cache.dir
 /home/chris/Desktop/heuristics/build/pipelines/CMakeFiles/rebuild_cache.dir

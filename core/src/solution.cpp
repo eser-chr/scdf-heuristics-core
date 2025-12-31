@@ -40,6 +40,7 @@ bool Solution::is_solution_feasible(Instance const &I)
     // Are gamma requests fullfiled?
     // Are pickups delivered ?
     // Is capacity ever larger than allowed?
+    
     int full_req = 0;
     int total_size_of_nodes = 0;
     for (auto const &route : routes)

@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3 -Wl,--dependency-file=CMakeFiles/tuning_ga.dir/link.d CMakeFiles/tuning_ga.dir/tuning_ga.cpp.o -o tuning_ga  ../core/libcore.a

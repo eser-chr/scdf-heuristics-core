@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3 -Wl,--dependency-file=CMakeFiles/competition.dir/link.d CMakeFiles/competition.dir/competition.cpp.o -o competition  ../core/libcore.a
